@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:responsive_sizer/responsive_sizer.dart'; // Import ResponsiveSizer
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:synergee/app/controllers/auth_controller.dart';
 import 'package:synergee/app/screens/home.dart';
 import 'package:synergee/widgtes/background_painter.dart';
@@ -10,7 +10,7 @@ import 'package:synergee/widgtes/login_button.dart';
 import '../controllers/login_controller.dart';
 
 class LoginScreen extends GetView<LoginController> {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,172 +39,186 @@ class LoginScreen extends GetView<LoginController> {
               ),
               Center(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 5.w), // Responsive padding
+                  padding: EdgeInsets.symmetric(horizontal: 5.w),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.gamepad_outlined,
-                        color: Colors.cyanAccent,
-                        size: 15.w, // Responsive icon size
-                      ),
-                      SizedBox(height: 3.h), // Responsive spacing
-
-                      Text(
-                        "Welcome, Gamer!",
-                        style: GoogleFonts.orbitron(
-                          fontSize: 22.sp, // Responsive font size
-                          fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 3.h),
+                        child: Icon(
+                          Icons.gamepad_outlined,
                           color: Colors.cyanAccent,
+                          size: 15.w,
                         ),
                       ),
-                      SizedBox(height: 3.h),
-
-                      TextField(
-                        controller: controller.emailController,
-                        style: TextStyle(color: Colors.white, fontSize: 16.sp),
-                        decoration: InputDecoration(
-                          labelText: "Email Address",
-                          labelStyle:
-                              TextStyle(color: Colors.white54, fontSize: 14.sp),
-                          filled: true,
-                          fillColor: Colors.black54,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none,
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 3.h),
+                        child: Text(
+                          "Welcome, Gamer!",
+                          style: GoogleFonts.orbitron(
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.cyanAccent,
                           ),
-                          prefixIcon: Icon(Icons.email,
-                              color: Colors.white54, size: 18.sp),
                         ),
                       ),
-                      SizedBox(height: 2.h),
-
-                      Obx(() => TextField(
-                            controller: controller.passwordController,
-                            obscureText: !controller.isPasswordVisible.value,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16.sp),
-                            decoration: InputDecoration(
-                              labelText: "Password",
-                              labelStyle: TextStyle(
-                                  color: Colors.white54, fontSize: 14.sp),
-                              filled: true,
-                              fillColor: Colors.black54,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none,
-                              ),
-                              prefixIcon: Icon(Icons.lock,
-                                  color: Colors.white54, size: 18.sp),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  controller.isPasswordVisible.value
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.white54,
-                                  size: 18.sp,
-                                ),
-                                onPressed: controller.togglePasswordVisibility,
-                              ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 2.h),
+                        child: TextField(
+                          controller: controller.emailController,
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 16.sp),
+                          decoration: InputDecoration(
+                            labelText: "Email Address",
+                            labelStyle: TextStyle(
+                                color: Colors.white54, fontSize: 14.sp),
+                            filled: true,
+                            fillColor: Colors.black54,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
                             ),
-                          )),
-
+                            prefixIcon: Icon(Icons.email,
+                                color: Colors.white54, size: 18.sp),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 1.h),
+                        child: Obx(() => TextField(
+                              controller: controller.passwordController,
+                              obscureText: !controller.isPasswordVisible.value,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 16.sp),
+                              decoration: InputDecoration(
+                                labelText: "Password",
+                                labelStyle: TextStyle(
+                                    color: Colors.white54, fontSize: 14.sp),
+                                filled: true,
+                                fillColor: Colors.black54,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide.none,
+                                ),
+                                prefixIcon: Icon(Icons.lock,
+                                    color: Colors.white54, size: 18.sp),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    controller.isPasswordVisible.value
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.white54,
+                                    size: 18.sp,
+                                  ),
+                                  onPressed:
+                                      controller.togglePasswordVisibility,
+                                ),
+                              ),
+                            )),
+                      ),
                       Align(
                         alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 3.h),
+                          child: TextButton(
+                            onPressed: controller.forgotPassword,
+                            child: Text(
+                              "Forgot password?",
+                              style: TextStyle(
+                                  color: Colors.cyanAccent, fontSize: 14.sp),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 2.h),
+                        child: Obx(() => GamerLoginButton(
+                              text: controller.isLoading.value
+                                  ? "Loading..."
+                                  : "Login",
+                              onPressed: controller.isLoading.value
+                                  ? () {}
+                                  : controller.login,
+                            )),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 2.h),
                         child: TextButton(
-                          onPressed: controller.forgotPassword,
+                          onPressed: () => Get.toNamed('/register'),
                           child: Text(
-                            "Forgot password?",
+                            "Not a member? Register now",
                             style: TextStyle(
                                 color: Colors.cyanAccent, fontSize: 14.sp),
                           ),
                         ),
                       ),
-
-                      SizedBox(height: 3.h),
-
-                      Obx(() => GamerLoginButton(
-                            text: controller.isLoading.value
-                                ? "Loading..."
-                                : "Login",
-                            onPressed: controller.isLoading.value
-                                ? () {}
-                                : controller.login,
-                          )),
-
-                      SizedBox(height: 2.h),
-
-                      TextButton(
-                        onPressed: () => Get.toNamed('/register'),
-                        child: Text(
-                          "Not a member? Register now",
-                          style: TextStyle(
-                              color: Colors.cyanAccent, fontSize: 14.sp),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 2.h),
+                        child: Row(
+                          children: [
+                            const Expanded(child: Divider(color: Colors.white54)),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 2.w),
+                              child: Text(
+                                "Or continue with",
+                                style: TextStyle(
+                                    color: Colors.white54, fontSize: 12.sp),
+                              ),
+                            ),
+                            const Expanded(child: Divider(color: Colors.white54)),
+                          ],
                         ),
                       ),
-
-                      SizedBox(height: 2.h),
-
-                      Row(
-                        children: [
-                          Expanded(child: Divider(color: Colors.white54)),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 2.w),
-                            child: Text(
-                              "Or continue with",
-                              style: TextStyle(
-                                  color: Colors.white54, fontSize: 12.sp),
-                            ),
-                          ),
-                          Expanded(child: Divider(color: Colors.white54)),
-                        ],
-                      ),
-                      SizedBox(height: 2.h),
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            icon: FaIcon(FontAwesomeIcons.google,
-                                color: Colors.redAccent),
-                            iconSize: 5.w,
-                            onPressed: () async {
-                              try {
-                                await Get.find<AuthController>()
-                                    .loginWithGoogle();
-                                if (Get.find<AuthController>()
-                                    .isSignedIn
-                                    .value) {
-                                  Get.offAll(() => HomePage());
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 2.5.w),
+                            child: IconButton(
+                              icon: const FaIcon(FontAwesomeIcons.google,
+                                  color: Colors.redAccent),
+                              iconSize: 5.w,
+                              onPressed: () async {
+                                try {
+                                  await Get.find<AuthController>()
+                                      .loginWithGoogle();
+                                  if (Get.find<AuthController>()
+                                      .isSignedIn
+                                      .value) {
+                                    Get.offAll(() => const HomePage());
+                                  }
+                                } catch (e) {
+                                  Get.snackbar(
+                                    "Error",
+                                    "Failed to sign in with Google",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  );
                                 }
-                              } catch (e) {
-                                Get.snackbar(
-                                  "Error",
-                                  "Failed to sign in with Google",
-                                  snackPosition: SnackPosition.BOTTOM,
-                                );
-                              }
-                            },
+                              },
+                            ),
                           ),
-                          SizedBox(width: 5.w),
-                          IconButton(
-                            icon: FaIcon(FontAwesomeIcons.apple,
-                                color: Colors.white),
-                            iconSize: 5.w,
-                            onPressed: () {
-                              // Apple sign-in action
-                            },
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 2.5.w),
+                            child: IconButton(
+                              icon: const FaIcon(FontAwesomeIcons.apple,
+                                  color: Colors.white),
+                              iconSize: 5.w,
+                              onPressed: () {
+                                // Apple sign-in action
+                              },
+                            ),
                           ),
-                          SizedBox(width: 5.w),
-                          IconButton(
-                            icon: FaIcon(FontAwesomeIcons.xbox,
-                                color: Colors.greenAccent),
-                            iconSize: 5.w,
-                            onPressed: () {
-                              // Game ID sign-in action
-                            },
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 2.5.w),
+                            child: IconButton(
+                              icon: const FaIcon(FontAwesomeIcons.xbox,
+                                  color: Colors.greenAccent),
+                              iconSize: 5.w,
+                              onPressed: () {
+                                // Game ID sign-in action
+                              },
+                            ),
                           ),
                         ],
                       )

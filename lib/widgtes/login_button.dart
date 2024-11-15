@@ -5,7 +5,7 @@ class GamerLoginButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const GamerLoginButton({required this.text, required this.onPressed});
+  const GamerLoginButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +35,9 @@ class GamerLoginButton extends StatelessWidget {
           ),
           // Main Button Container
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 colors: [
                   Color(0xFF00FFFF),
                   Color(0xFF0088FF),
@@ -54,7 +54,7 @@ class GamerLoginButton extends StatelessWidget {
                 BoxShadow(
                   color: Colors.cyanAccent.withOpacity(0.3),
                   blurRadius: 10,
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),

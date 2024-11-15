@@ -9,8 +9,7 @@ import '../screens/onboarding_screen.dart';
 class AppRoutes {
   static const String ONBOARDING = '/onboarding';
   static const String LOGIN = '/login';
-  static const String REGISTER = '/register'; // Register route constant
-
+  static const String REGISTER = '/register';
   static List<GetPage> routes = [
     GetPage(
       name: ONBOARDING,
@@ -19,13 +18,13 @@ class AppRoutes {
     ),
     GetPage(
       name: LOGIN,
-      page: () => LoginScreen(),
+      page: () => const LoginScreen(),
       binding: LoginBinding(),
     ),
     GetPage(
       name: REGISTER,
-      page: () => RegisterScreen(),
-      binding: RegisterBinding(), // Add Register screen route with binding
+      page: () => const RegisterScreen(),
+      binding: RegisterBinding(),
     ),
   ];
 }

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:responsive_sizer/responsive_sizer.dart'; // Import ResponsiveSizer
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:synergee/widgtes/background_painter.dart';
 import '../controllers/onboarding_controller.dart';
 import '../routes/app_routes.dart';
 
 class OnboardingScreen extends StatelessWidget {
   final OnboardingController controller = Get.find();
+
+  OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,6 @@ class OnboardingScreen extends StatelessWidget {
         return Scaffold(
           body: Stack(
             children: [
-              // Gaming-themed Background
               Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -30,7 +31,6 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // Background Overlay for Faint Gaming Elements (Grid, Shapes)
               CustomPaint(
                 painter: GamingBackgroundPainter(),
                 child: Container(),
@@ -56,9 +56,8 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              // Dot indicators for page navigation
               Positioned(
-                bottom: 18.h, // Responsive spacing from the bottom
+                bottom: 18.h,
                 left: 0,
                 right: 0,
                 child: Obx(() {
@@ -66,8 +65,7 @@ class OnboardingScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(2, (index) {
                       return Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 1.w), // Responsive margin
+                        margin: EdgeInsets.symmetric(horizontal: 1.w),
                         width:
                             controller.currentIndex.value == index ? 3.w : 2.w,
                         height:
@@ -99,14 +97,14 @@ class OnboardingScreen extends StatelessWidget {
     String subtitle = "",
   }) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.w), // Responsive padding
+      padding: EdgeInsets.symmetric(horizontal: 5.w),
       child: Column(
         children: [
-          Spacer(flex: 3),
+          const Spacer(flex: 3),
           if (isVideoPage)
             Container(
-              width: 80.w, // Responsive width
-              height: 35.h, // Responsive height
+              width: 80.w,
+              height: 35.h,
               decoration: BoxDecoration(
                 color: Colors.black26,
                 borderRadius: BorderRadius.circular(16),
@@ -115,33 +113,31 @@ class OnboardingScreen extends StatelessWidget {
                 child: Icon(
                   Icons.play_circle_fill,
                   color: Colors.white,
-                  size: 10.w, // Responsive icon size
+                  size: 10.w,
                 ),
               ),
             ),
           if (!isVideoPage)
             Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 4.w), // Responsive padding
+              padding: EdgeInsets.symmetric(horizontal: 4.w),
               child: Column(
                 children: [
                   Text(
                     title,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                      fontSize: 22.sp, // Responsive font size
+                      fontSize: 22.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
                   Padding(
-                    padding:
-                        EdgeInsets.only(top: 2.h), // Responsive top padding
+                    padding: EdgeInsets.only(top: 2.h),
                     child: Text(
                       subtitle,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
-                        fontSize: 16.sp, // Responsive font size
+                        fontSize: 16.sp,
                         color: Colors.white70,
                       ),
                     ),
@@ -149,9 +145,9 @@ class OnboardingScreen extends StatelessWidget {
                 ],
               ),
             ),
-          Spacer(flex: 4),
+          const Spacer(flex: 4),
           Padding(
-            padding: EdgeInsets.only(bottom: 5.h), // Responsive bottom padding
+            padding: EdgeInsets.only(bottom: 5.h),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: ElevatedButton(
@@ -169,7 +165,7 @@ class OnboardingScreen extends StatelessWidget {
                 child: Text(
                   buttonText,
                   style: GoogleFonts.poppins(
-                    fontSize: 16.sp, // Responsive font size
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
