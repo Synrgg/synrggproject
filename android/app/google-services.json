@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "809372470283",
+    "project_id": "synergee-1255f",
+    "storage_bucket": "synergee-1255f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809372470283:android:87e7c4754eb750b8610b0e",
+        "android_client_info": {
+          "package_name": "com.example.synergee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809372470283-ejai0uhrdp8oaa55tvol1l2ukd790s03.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg-2iadcQRjdNH1YFr1JZeVxqRPlpv7yI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809372470283-ejai0uhrdp8oaa55tvol1l2ukd790s03.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
