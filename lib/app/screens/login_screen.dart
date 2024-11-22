@@ -186,7 +186,7 @@ class LoginScreen extends GetView<LoginController> {
                                   if (Get.find<AuthController>()
                                       .isSignedIn
                                       .value) {
-                                    Get.offAll(() => const HomePage());
+                                    Get.offAll(() => HomeScreen());
                                   }
                                 } catch (e) {
                                   Get.snackbar(

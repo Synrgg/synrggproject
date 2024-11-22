@@ -72,7 +72,7 @@ class RegisterController extends GetxController {
 
       await userCredential.user?.updateDisplayName(name);
 
-      Get.offAll(() => const HomePage());
+      Get.offAll(() => HomeScreen());
       Get.snackbar("Success", "Account created successfully!");
     } catch (e) {
       Get.snackbar("Error", e.toString());
