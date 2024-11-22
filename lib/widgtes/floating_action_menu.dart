@@ -12,7 +12,7 @@ class FloatingActionMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-          () => Stack(
+      () => Stack(
         children: [
           if (controller.isFloatingMenuOpen.value)
             Positioned.fill(
@@ -29,35 +29,34 @@ class FloatingActionMenu extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (controller.isFloatingMenuOpen.value)
-                  ...[
-                    _buildFloatingMenuItem(
-                      icon: Icons.post_add,
-                      color: Colors.cyan,
-                      label: "Add Post",
-                      onPressed: () {
-                        print("Add Post pressed");
-                      },
-                    ),
-                    _buildFloatingMenuItem(
-                      icon: Icons.create,
-                      color: Colors.cyan,
-                      label: "Create Post",
-                      onPressed: () {
-                        print("Create Post pressed");
-                      },
-                    ),
-                    _buildFloatingMenuItem(
-                      icon: Icons.upload_file,
-                      color: Colors.cyan,
-                      label: "Upload Post",
-                      onPressed: () {
-                        print("Upload Post pressed");
-                      },
-                    ),
-                  ],
+                if (controller.isFloatingMenuOpen.value) ...[
+                  _buildFloatingMenuItem(
+                    icon: Icons.post_add,
+                    color: Color.fromARGB(255, 129, 34, 213),
+                    label: "Add Post",
+                    onPressed: () {
+                      print("Add Post pressed");
+                    },
+                  ),
+                  _buildFloatingMenuItem(
+                    icon: Icons.create,
+                    color: Color.fromARGB(255, 129, 34, 213),
+                    label: "Create Post",
+                    onPressed: () {
+                      print("Create Post pressed");
+                    },
+                  ),
+                  _buildFloatingMenuItem(
+                    icon: Icons.upload_file,
+                    color: Color.fromARGB(255, 129, 34, 213),
+                    label: "Upload Post",
+                    onPressed: () {
+                      print("Upload Post pressed");
+                    },
+                  ),
+                ],
                 FloatingActionButton(
-                  backgroundColor: Colors.cyanAccent,
+                  backgroundColor: Color.fromARGB(255, 129, 34, 213),
                   onPressed: controller.toggleFloatingMenu,
                   child: AnimatedRotation(
                     duration: const Duration(milliseconds: 300),

@@ -3,6 +3,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:get/get.dart';
 
 import '../app/controllers/home_screen_controller.dart';
+import '../app/controllers/auth_controller.dart'; // Import AuthController
 
 class CustomDrawer extends StatelessWidget {
   final HomeScreenController controller;
@@ -15,7 +16,10 @@ class CustomDrawer extends StatelessWidget {
       child: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+            colors: [
+              Color.fromARGB(255, 47, 3, 95),
+              Color.fromARGB(255, 106, 12, 188),
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -40,9 +44,8 @@ class CustomDrawer extends StatelessWidget {
                     icon: Icons.logout,
                     title: "Logout",
                     color: Colors.redAccent,
-                    onTap: () {
-                      // Handle logout tap
-                      print("Logout tapped");
+                    onTap: () async {
+                      await _logoutAndNavigateToLogin();
                     },
                   ),
                   _buildAnimatedListTile(
@@ -64,6 +67,11 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
+  Future<void> _logoutAndNavigateToLogin() async {
+    await Get.find<AuthController>().logout();
+    Get.offAllNamed('/login');
+  }
+
   Widget _buildDrawerHeader() {
     return DrawerHeader(
       decoration: const BoxDecoration(
@@ -79,7 +87,7 @@ class CustomDrawer extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 35,
-            backgroundImage: AssetImage('assets/images/avatar.png'),
+            backgroundImage: AssetImage('assets/images/avatar.jpg'),
             backgroundColor: Colors.transparent,
           ),
           const SizedBox(height: 10),
@@ -161,4 +169,3 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 }
-

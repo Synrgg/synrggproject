@@ -45,7 +45,7 @@ class PostCard extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 5.w,
-                    backgroundColor: Colors.cyanAccent,
+                    backgroundColor: Color.fromARGB(255, 129, 34, 213),
                   ),
                   SizedBox(width: 3.w),
                   Text(
@@ -116,7 +116,8 @@ class PostCard extends StatelessWidget {
                   onTap: onLike,
                   child: Row(
                     children: [
-                      Icon(Icons.thumb_up_alt_outlined, color: Colors.white54, size: 18.sp),
+                      Icon(Icons.thumb_up_alt_outlined,
+                          color: Colors.white54, size: 18.sp),
                       SizedBox(width: 1.w),
                       Text(
                         likes.toString(),
@@ -132,7 +133,8 @@ class PostCard extends StatelessWidget {
                   onTap: onComment,
                   child: Row(
                     children: [
-                      Icon(Icons.chat_bubble_outline, color: Colors.white54, size: 18.sp),
+                      Icon(Icons.chat_bubble_outline,
+                          color: Colors.white54, size: 18.sp),
                       SizedBox(width: 1.w),
                       Text(
                         comments.toString(),
@@ -146,7 +148,8 @@ class PostCard extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: onShare,
-                  child: const Icon(Icons.send, color: Colors.white54, size: 18),
+                  child:
+                      const Icon(Icons.send, color: Colors.white54, size: 18),
                 ),
               ],
             ),

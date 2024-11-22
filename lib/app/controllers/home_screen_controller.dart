@@ -1,16 +1,18 @@
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeScreenController extends GetxController {
   // Observable variables for user information
   var userAvatarPath = 'assets/user_avatar.png'.obs;
-  var userName = 'Admin'.obs;
-  var userEmail = 'synrgg@gmail.com'.obs;
+  var userName = ''.obs;
+  var userEmail = ''.obs;
 
   // Observable variables for search and posts
-  var isSearchActive = false.obs; // Tracks the visibility of the search bar
-  var searchQuery = ''.obs; // Tracks the current search query
-  var posts = <Map<String, dynamic>>[].obs; // Original list of posts
-  var filteredPosts = <Map<String, dynamic>>[].obs; // Filtered posts for search
+  var isSearchActive = false.obs;
+  var searchQuery = ''.obs;
+  var posts = <Map<String, dynamic>>[].obs;
+  var filteredPosts = <Map<String, dynamic>>[].obs;
 
   // Observable variable for bottom navigation
   var selectedIndex = 0.obs;
@@ -21,9 +23,39 @@ class HomeScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // Fetch user details from Firebase
+    fetchUserDetails();
     // Initialize posts
     loadPosts();
-    debounce(searchQuery, (_) => filterPosts(), time: const Duration(milliseconds: 300));
+    debounce(searchQuery, (_) => filterPosts(),
+        time: const Duration(milliseconds: 300));
+  }
+
+  Future<void> fetchUserDetails() async {
+    try {
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        userEmail.value = currentUser.email ?? 'No email';
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+
+        if (userDoc.exists) {
+          userName.value = userDoc['name'] ?? 'No name';
+          userAvatarPath.value =
+              userDoc['avatarPath'] ?? 'assets/user_avatar.png';
+        } else {
+          userName.value = 'Anonymous';
+        }
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Failed to fetch user details. Please try again.",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 
   void loadPosts() {
@@ -72,7 +104,6 @@ class HomeScreenController extends GetxController {
     filteredPosts.assignAll(posts);
   }
 
-  // Toggle search bar visibility
   void toggleSearchBar() {
     isSearchActive.toggle();
     if (!isSearchActive.value) {
@@ -81,7 +112,6 @@ class HomeScreenController extends GetxController {
     }
   }
 
-  // Filter posts based on the search query
   void filterPosts() {
     if (searchQuery.isEmpty) {
       filteredPosts.assignAll(posts);
@@ -89,9 +119,9 @@ class HomeScreenController extends GetxController {
       filteredPosts.assignAll(
         posts.where((post) {
           return post['communityName']
-              .toString()
-              .toLowerCase()
-              .contains(searchQuery.value.toLowerCase()) ||
+                  .toString()
+                  .toLowerCase()
+                  .contains(searchQuery.value.toLowerCase()) ||
               post['postTitle']
                   .toString()
                   .toLowerCase()
@@ -105,22 +135,18 @@ class HomeScreenController extends GetxController {
     }
   }
 
-  // Toggle floating button menu
   void toggleFloatingMenu() {
     isFloatingMenuOpen.toggle();
   }
 
-  // Handle Like functionality
   void likePost(int index) {
     filteredPosts[index]['likes']++;
   }
 
-  // Handle Comment functionality
   void addComment(int index) {
     filteredPosts[index]['comments']++;
   }
 
-  // Change bottom navigation tab
   void changeTab(int index) {
     selectedIndex.value = index;
   }

@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class GamerLoginButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final double borderRadius;
 
-  const GamerLoginButton({super.key, required this.text, required this.onPressed});
+  const GamerLoginButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+    this.borderRadius = 30.0,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,19 +20,18 @@ class GamerLoginButton extends StatelessWidget {
       onTap: onPressed,
       child: Stack(
         children: [
-          // Outer Glow Effect
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(borderRadius),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.cyanAccent.withOpacity(0.6),
+                    color: Color.fromARGB(255, 147, 54, 229).withOpacity(0.3),
                     blurRadius: 20,
                     spreadRadius: 3,
                   ),
                   BoxShadow(
-                    color: Colors.blue.withOpacity(0.3),
+                    color: Color.fromARGB(255, 147, 54, 229).withOpacity(0.3),
                     blurRadius: 30,
                     spreadRadius: 10,
                   ),
@@ -33,26 +39,25 @@ class GamerLoginButton extends StatelessWidget {
               ),
             ),
           ),
-          // Main Button Container
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [
-                  Color(0xFF00FFFF),
-                  Color(0xFF0088FF),
+                  Color.fromARGB(255, 147, 54, 229),
+                  Color.fromARGB(255, 123, 0, 255),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               border: Border.all(
-                color: Colors.cyanAccent,
+                color: Color.fromARGB(255, 147, 54, 229),
                 width: 2,
               ),
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(borderRadius),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.cyanAccent.withOpacity(0.3),
+                  color: Color.fromARGB(255, 147, 54, 229).withOpacity(0.3),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -62,7 +67,7 @@ class GamerLoginButton extends StatelessWidget {
               child: Text(
                 text,
                 style: GoogleFonts.orbitron(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:synergee/app/data/services/firestore_user_service.dart';
 import 'package:synergee/app/screens/home.dart';
 
 class RegisterController extends GetxController {
@@ -14,6 +15,8 @@ class RegisterController extends GetxController {
   var isConfirmPasswordVisible = false.obs;
   var agreesToTerms = false.obs;
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirestoreUserService _firestoreService = FirestoreUserService();
   final termsRecognizer = TapGestureRecognizer()
     ..onTap = () {
       Get.snackbar("Terms", "Navigate to Terms and Conditions page.");
@@ -23,8 +26,6 @@ class RegisterController extends GetxController {
     ..onTap = () {
       Get.snackbar("Privacy", "Navigate to Privacy Policy page.");
     };
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
@@ -71,6 +72,10 @@ class RegisterController extends GetxController {
       );
 
       await userCredential.user?.updateDisplayName(name);
+      await _firestoreService.createUserInFirestore(
+        userCredential.user!,
+        name: name,
+      );
 
       Get.offAll(() => HomeScreen());
       Get.snackbar("Success", "Account created successfully!");

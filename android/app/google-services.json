@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "809372470283-bcq1htititp9akuocm4dov02ank25i3i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.synergee",
+            "certificate_hash": "376b05f6ebfd3668e52e32737256e0207abe7ed0"
+          }
+        },
+        {
           "client_id": "809372470283-ejai0uhrdp8oaa55tvol1l2ukd790s03.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "809372470283-ejai0uhrdp8oaa55tvol1l2ukd790s03.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "809372470283-37itbarq17vk7p2cuo7fs1eo8sdvqops.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.synergee"
+              }
             }
           ]
         }

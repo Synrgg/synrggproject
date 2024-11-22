@@ -13,14 +13,17 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return Scaffold(
-          backgroundColor: Colors.black,
+          backgroundColor: theme.scaffoldBackgroundColor,
           appBar: CustomAppBar(controller: controller),
           drawer: CustomDrawer(controller: controller),
           body: PostList(controller: controller),
-          bottomNavigationBar: CustomBottomNavigationBar(controller: controller),
+          bottomNavigationBar:
+              CustomBottomNavigationBar(controller: controller),
           floatingActionButton: FloatingActionMenu(controller: controller),
         );
       },

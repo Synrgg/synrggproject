@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:synergee/widgtes/background_painter.dart';
 import '../controllers/onboarding_controller.dart';
 import '../routes/app_routes.dart';
 
@@ -13,28 +12,12 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return Scaffold(
           body: Stack(
             children: [
-              Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF000000),
-                      Color(0xFF203A43),
-                      Color(0xFF000000),
-                    ],
-                  ),
-                ),
-              ),
-              CustomPaint(
-                painter: GamingBackgroundPainter(),
-                child: Container(),
-              ),
               PageView(
                 onPageChanged: controller.changePage,
                 children: [
@@ -72,8 +55,8 @@ class OnboardingScreen extends StatelessWidget {
                             controller.currentIndex.value == index ? 3.w : 2.w,
                         decoration: BoxDecoration(
                           color: controller.currentIndex.value == index
-                              ? Colors.white
-                              : Colors.grey[400],
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.onSurface.withOpacity(0.4),
                           shape: BoxShape.circle,
                         ),
                       );
@@ -96,6 +79,8 @@ class OnboardingScreen extends StatelessWidget {
     required bool isVideoPage,
     String subtitle = "",
   }) {
+    final ThemeData theme = Theme.of(context);
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5.w),
       child: Column(
@@ -106,13 +91,13 @@ class OnboardingScreen extends StatelessWidget {
               width: 80.w,
               height: 35.h,
               decoration: BoxDecoration(
-                color: Colors.black26,
+                color: theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Center(
                 child: Icon(
                   Icons.play_circle_fill,
-                  color: Colors.white,
+                  color: theme.colorScheme.onSurface,
                   size: 10.w,
                 ),
               ),
@@ -128,7 +113,7 @@ class OnboardingScreen extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 22.sp,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: theme.colorScheme.onPrimary,
                     ),
                   ),
                   Padding(
@@ -138,7 +123,8 @@ class OnboardingScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         fontSize: 16.sp,
-                        color: Colors.white70,
+                        color: theme
+                            .colorScheme.onSurface, // On-surface text color
                       ),
                     ),
                   ),
@@ -153,8 +139,10 @@ class OnboardingScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () => Get.toNamed(route),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: const Color(0xFF1F1C2C),
-                  backgroundColor: Colors.white,
+                  foregroundColor: theme
+                      .colorScheme.primary, // Primary color for button text
+                  backgroundColor: theme.colorScheme
+                      .onPrimary, // On-primary color for button background
                   padding:
                       EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
                   shape: RoundedRectangleBorder(

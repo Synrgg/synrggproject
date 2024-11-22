@@ -7,20 +7,17 @@ class LoginController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // Observable variables
   final isPasswordVisible = false.obs;
   final isLoading = false.obs;
 
-  // Getters for current values
   String get email => emailController.text;
   String get password => passwordController.text;
 
   @override
   void onInit() {
     super.onInit();
-    // Add listeners to controllers if needed
     emailController.addListener(() {
-      update(); // Updates the UI when text changes
+      update(); 
     });
     passwordController.addListener(() {
       update();
@@ -65,10 +62,8 @@ class LoginController extends GetxController {
           backgroundColor: Colors.green.withOpacity(0.1),
           colorText: Colors.white,
         );
-        // Clear sensitive data
         emailController.clear();
         passwordController.clear();
-        // Navigate to home screen
         Get.offAllNamed('/home');
       }
     } on FirebaseAuthException catch (e) {
@@ -154,18 +149,14 @@ class LoginController extends GetxController {
       isLoading.value = false;
     }
   }
-
-  // Method to validate email format
   bool isValidEmail(String email) {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
-  // Method to check password strength
   bool isStrongPassword(String password) {
     return password.length >= 8;
   }
 
-  // Helper method to show error messages
   void showError(String message) {
     Get.snackbar(
       'Error',
@@ -177,7 +168,6 @@ class LoginController extends GetxController {
     );
   }
 
-  // Helper method to show success messages
   void showSuccess(String message) {
     Get.snackbar(
       'Success',
