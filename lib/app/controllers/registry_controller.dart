@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:synergee/app/data/services/firestore_user_service.dart';
-import 'package:synergee/app/screens/home.dart';
+import 'package:synergee/app/screens/community.dart';
 
 class RegisterController extends GetxController {
   final nameController = TextEditingController();
@@ -77,7 +77,7 @@ class RegisterController extends GetxController {
         name: name,
       );
 
-      Get.offAll(() => HomeScreen());
+      Get.offAll(() => CommunityScreen());
       Get.snackbar("Success", "Account created successfully!");
     } catch (e) {
       Get.snackbar("Error", e.toString());

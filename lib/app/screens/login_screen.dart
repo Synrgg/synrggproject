@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:synergee/app/controllers/auth_controller.dart';
-import 'package:synergee/app/screens/home.dart';
+import 'package:synergee/app/screens/community.dart';
 import 'package:synergee/widgtes/login_button.dart';
 import '../controllers/login_controller.dart';
 
@@ -184,7 +184,7 @@ class LoginScreen extends GetView<LoginController> {
                                 if (Get.find<AuthController>()
                                     .isSignedIn
                                     .value) {
-                                  Get.offAll(() => HomeScreen());
+                                  Get.offAll(() => CommunityScreen());
                                 }
                               } catch (e) {
                                 Get.snackbar(

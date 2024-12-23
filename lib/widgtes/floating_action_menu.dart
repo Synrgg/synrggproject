@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../app/controllers/home_screen_controller.dart';
+import '../app/controllers/community_screen_controller.dart';
 
 class FloatingActionMenu extends StatelessWidget {
-  final HomeScreenController controller;
+  final CommunityScreenController controller;
 
   const FloatingActionMenu({required this.controller});
 

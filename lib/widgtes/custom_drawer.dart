@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:get/get.dart';
 
-import '../app/controllers/home_screen_controller.dart';
+import '../app/controllers/community_screen_controller.dart';
 import '../app/controllers/auth_controller.dart'; // Import AuthController
 
 class CustomDrawer extends StatelessWidget {
-  final HomeScreenController controller;
+  final CommunityScreenController controller;
 
   const CustomDrawer({Key? key, required this.controller}) : super(key: key);
 

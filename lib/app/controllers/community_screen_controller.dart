@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class HomeScreenController extends GetxController {
+class CommunityScreenController extends GetxController {
   // Observable variables for user information
   var userAvatarPath = 'assets/user_avatar.png'.obs;
   var userName = ''.obs;

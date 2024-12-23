@@ -1,32 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../widgtes/custom_app_bar.dart';
-import '../../widgtes/custom_bottom_navigator_bar.dart';
-import '../../widgtes/custom_drawer.dart';
-import '../../widgtes/floating_action_menu.dart';
-import '../../widgtes/post_list.dart';
-import '../controllers/home_screen_controller.dart';
+import 'package:synergee/widgtes/card.dart';
+import 'package:synergee/widgtes/custom_app_bar.dart';
+import 'package:synergee/widgtes/custom_bottom_navigator_bar.dart';
+import '../controllers/community_screen_controller.dart';
 
-class HomeScreen extends StatelessWidget {
-  final HomeScreenController controller = Get.put(HomeScreenController());
+class HomePage extends StatelessWidget {
+  HomePage({Key? key}) : super(key: key);
+
+  final CommunityScreenController controller =
+      Get.put(CommunityScreenController());
+
+  final List<Map<String, dynamic>> items = List.generate(
+    50,
+    (index) => {
+      'title': 'Card Header',
+      'description': 'This is a card description',
+      'size': index % 3,
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return ResponsiveSizer(
-      builder: (context, orientation, screenType) {
-        return Scaffold(
-          backgroundColor: theme.scaffoldBackgroundColor,
-          appBar: CustomAppBar(controller: controller),
-          drawer: CustomDrawer(controller: controller),
-          body: PostList(controller: controller),
-          bottomNavigationBar:
-              CustomBottomNavigationBar(controller: controller),
-          floatingActionButton: FloatingActionMenu(controller: controller),
-        );
-      },
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: CustomAppBar(controller: controller),
+      body: SingleChildScrollView(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Left Column
+            Expanded(
+              child: Column(
+                children: items
+                    .asMap()
+                    .entries
+                    .where((entry) => entry.key % 2 == 0)
+                    .map((entry) => ContentCard(
+                          item: entry.value,
+                        ))
+                    .toList(),
+              ),
+            ),
+            // Right Column
+            Expanded(
+              child: Column(
+                children: items
+                    .asMap()
+                    .entries
+                    .where((entry) => entry.key % 2 == 1)
+                    .map((entry) => ContentCard(
+                          item: entry.value,
+                        ))
+                    .toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(controller: controller),
     );
   }
 }

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../app/controllers/home_screen_controller.dart';
+import 'package:synergee/app/controllers/community_screen_controller.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final HomeScreenController controller;
+  final CommunityScreenController controller;
 
   const CustomAppBar({Key? key, required this.controller}) : super(key: key);
 
   @override
-  Size get preferredSize =>
-      Size.fromHeight(6.h); // Adjust AppBar height dynamically
+  Size get preferredSize => Size.fromHeight(6.h);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 5,
       iconTheme: const IconThemeData(
         color: Color.fromARGB(255, 129, 34, 213),
-      ), // Set hamburger icon color to cyan
+      ),
       title: Obx(() {
         return controller.isSearchActive.value
             ? TextField(

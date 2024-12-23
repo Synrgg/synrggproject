@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-
-import '../app/controllers/home_screen_controller.dart';
+import 'package:get/get.dart';
+import 'package:synergee/app/screens/community.dart';
+import 'package:synergee/app/screens/home.dart';
+import '../app/controllers/community_screen_controller.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
-  final HomeScreenController controller;
+  final CommunityScreenController controller;
 
   const CustomBottomNavigationBar({Key? key, required this.controller})
       : super(key: key);
@@ -14,18 +15,53 @@ class CustomBottomNavigationBar extends StatelessWidget {
     return Obx(
       () => BottomNavigationBar(
         currentIndex: controller.selectedIndex.value,
-        onTap: controller.changeTab,
+        onTap: (index) {
+          controller.changeTab(index);
+          switch (index) {
+            case 0:
+              Get.offAll(() => HomePage());
+              break;
+            case 1:
+              Get.offAll(() => CommunityScreen());
+              break;
+            case 2:
+              // new logic
+              break;
+            case 3:
+              Get.snackbar("Coming Soon", "This feature is under development");
+              break;
+            case 4:
+              // Add logic for the "More" icon
+              break;
+            default:
+              break;
+          }
+        },
         backgroundColor: Colors.grey[900],
-        selectedItemColor: Color.fromARGB(255, 129, 34, 213),
+        selectedItemColor: const Color.fromARGB(255, 129, 34, 213),
         unselectedItemColor: Colors.white54,
         type: BottomNavigationBarType.fixed,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'New'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Alerts'),
-          BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'More'),
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Community',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'New',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Alerts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            label: 'More',
+          ),
         ],
       ),
     );
