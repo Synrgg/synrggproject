@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:synergee/app/screens/chat_screen.dart';
 import 'package:synergee/app/screens/community.dart';
 import 'package:synergee/app/screens/home.dart';
 import '../app/controllers/community_screen_controller.dart';
@@ -31,7 +32,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
               Get.snackbar("Coming Soon", "This feature is under development");
               break;
             case 4:
-              // Add logic for the "More" icon
+              // Add logic for the "Chat" icon
+              Get.offAll(() => ChatScreen());
+
               break;
             default:
               break;
@@ -55,12 +58,12 @@ class CustomBottomNavigationBar extends StatelessWidget {
             label: 'New',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Alerts',
+            icon: Icon(Icons.volume_up),
+            label: 'Voice',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'More',
+            icon: Icon(Icons.chat),
+            label: 'Chat',
           ),
         ],
       ),

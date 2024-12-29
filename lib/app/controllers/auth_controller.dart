@@ -24,7 +24,7 @@ class AuthController extends GetxController {
         isSignedIn.value = true;
 
         // Ensure user exists in Firestore
-        await _firestoreService.createUserInFirestore(user);
+        await saveUserToFirestore(user);
 
         Get.offAllNamed('/home'); // Navigate to Home
       }
@@ -37,7 +37,7 @@ class AuthController extends GetxController {
       if (googleUser == null) return;
 
       final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      await googleUser.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -45,10 +45,10 @@ class AuthController extends GetxController {
       );
 
       UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+      await _auth.signInWithCredential(credential);
 
       if (userCredential.user != null) {
-        await _firestoreService.createUserInFirestore(userCredential.user!);
+        await saveUserToFirestore(userCredential.user!);
       }
 
       Get.snackbar(
@@ -78,6 +78,25 @@ class AuthController extends GetxController {
       Get.snackbar(
         "Logout Error",
         "An error occurred: ${error.toString()}",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  // Add this function to save the user to Firestore
+  Future<void> saveUserToFirestore(User user) async {
+    try {
+      await _firestoreService.createUserInFirestore(user);
+
+      Get.snackbar(
+        "User Synced",
+        "User information has been updated in Firestore",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (error) {
+      Get.snackbar(
+        "Sync Error",
+        "An error occurred while saving user: ${error.toString()}",
         snackPosition: SnackPosition.BOTTOM,
       );
     }

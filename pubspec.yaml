@@ -41,7 +41,12 @@ dependencies:
   responsive_sizer: ^3.3.1
   shimmer: ^2.0.0
   cloud_firestore: ^5.5.0
-
+  image_picker: ^0.8.7+3
+  youtube_player_flutter: ^9.1.1
+  flutter_inappwebview: ^6.1.5  # or another compatible version if needed
+  permission_handler: ^10.4.0
+  firebase_storage: ^12.3.7 # Firebase Storage
+  animated_text_kit: ^4.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -61,6 +66,7 @@ flutter:
   uses-material-design: true
   assets:
       - assets/images/
+      - assets/videos/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

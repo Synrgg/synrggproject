@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:synergee/app/controllers/community_screen_controller.dart';
 
+import '../app/screens/profile_screen.dart';
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final CommunityScreenController controller;
 
@@ -53,9 +55,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         if (!controller.isSearchActive.value)
           IconButton(
             icon: const Icon(Icons.person, color: Colors.white, size: 22),
-            onPressed: () {
-              // Navigate to user account page
-            },
+              onPressed: () {
+                Get.to(() => ProfileScreen(), arguments: {
+                  "username": "JohnDoe",
+                  "valorantData": {
+                    "rank": "Platinum",
+                    "kda": "1.67",
+                    "matches": "120",
+                    "winrate": "65%",
+                  },
+                  "bgmiData": {
+                    "rank": "Ace",
+                    "kda": "4.23",
+                    "matches": "150",
+                    "winrate": "72%",
+                  },
+                });
+              },
+
           ),
       ],
     );
