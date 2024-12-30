@@ -11,7 +11,6 @@ import 'app/bindings/Community_binding.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Supabase
   await Supabase.initialize(
     url: 'https://vjggpouicbdedpokiziq.supabase.co',
     anonKey:

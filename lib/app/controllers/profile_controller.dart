@@ -110,10 +110,8 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200) {
         final List<dynamic> gameList = json.decode(response.body);
 
-        // Map the game data to a List<Map<String, String>>
         gamesData.value = gameList
             .map((game) {
-              // Safely cast all dynamic values to String
               return {
                 "name": game["name"]?.toString() ?? "Unknown",
                 "rank": game["rank"]?.toString() ?? "N/A",

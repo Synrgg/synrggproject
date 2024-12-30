@@ -19,17 +19,15 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    // Listen to authentication state changes
     _supabase.auth.onAuthStateChange.listen((event) {
       if (event.event == AuthChangeEvent.signedIn) {
         isSignedIn.value = true;
         saveUserToDatabase(event.session!.user);
 
-        Get.offAllNamed('/home'); // Navigate to Home
+        Get.offAllNamed('/home');
       } else if (event.event == AuthChangeEvent.signedOut) {
         isSignedIn.value = false;
-        Get.offAllNamed('/onboarding'); // Navigate to Onboarding
+        Get.offAllNamed('/onboarding');
       }
     });
   }
