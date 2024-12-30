@@ -8,7 +8,7 @@ import '../app/screens/profile_screen.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final CommunityScreenController controller;
 
-  const CustomAppBar({Key? key, required this.controller}) : super(key: key);
+  const CustomAppBar({super.key, required this.controller});
 
   @override
   Size get preferredSize => Size.fromHeight(6.h);
@@ -56,7 +56,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
             icon: const Icon(Icons.person, color: Colors.white, size: 22),
               onPressed: () {
-                Get.to(() => ProfileScreen(), arguments: {
+                Get.to(() => const ProfileScreen(), arguments: {
                   "username": "JohnDoe",
                   "valorantData": {
                     "rank": "Platinum",

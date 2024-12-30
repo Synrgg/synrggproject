@@ -17,7 +17,7 @@ class ChatController extends GetxController {
     try {
       isLoading.value = true;
       final snapshot = await FirebaseFirestore.instance.collection('users').get();
-      users.value = snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      users.value = snapshot.docs.map((doc) => doc.data()).toList();
       filteredUsers.value = users; // Initially, show all users
     } catch (e) {
       Get.snackbar('Error', 'Failed to fetch users: $e');

@@ -1,31 +1,38 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:synergee/app/data/services/firestore_user_service.dart';
-import 'package:synergee/app/screens/community.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterController extends GetxController {
+  final SupabaseClient _supabase = Supabase.instance.client;
+
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  var isPasswordVisible = false.obs;
-  var isConfirmPasswordVisible = false.obs;
-  var agreesToTerms = false.obs;
+  final isPasswordVisible = false.obs;
+  final isConfirmPasswordVisible = false.obs;
+  final agreesToTerms = false.obs;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirestoreUserService _firestoreService = FirestoreUserService();
-  final termsRecognizer = TapGestureRecognizer()
-    ..onTap = () {
-      Get.snackbar("Terms", "Navigate to Terms and Conditions page.");
-    };
+  late final TapGestureRecognizer termsRecognizer;
+  late final TapGestureRecognizer privacyRecognizer;
 
-  final privacyRecognizer = TapGestureRecognizer()
-    ..onTap = () {
-      Get.snackbar("Privacy", "Navigate to Privacy Policy page.");
-    };
+  @override
+  void onInit() {
+    super.onInit();
+    termsRecognizer = TapGestureRecognizer()
+      ..onTap = () {
+        // Navigate to Terms and Conditions
+        Get.toNamed('/terms');
+      };
+
+    privacyRecognizer = TapGestureRecognizer()
+      ..onTap = () {
+        // Navigate to Privacy Policy
+        Get.toNamed('/privacy');
+      };
+  }
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
@@ -42,7 +49,7 @@ class RegisterController extends GetxController {
     final confirmPassword = confirmPasswordController.text.trim();
 
     if (!agreesToTerms.value) {
-      Get.snackbar("Error", "You must agree to the Terms and Privacy Policy.");
+      Get.snackbar('Error', 'You must agree to the Terms and Privacy Policy.');
       return;
     }
 
@@ -50,37 +57,37 @@ class RegisterController extends GetxController {
         email.isEmpty ||
         password.isEmpty ||
         confirmPassword.isEmpty) {
-      Get.snackbar("Error", "All fields are required.");
+      Get.snackbar('Error', 'All fields are required.');
       return;
     }
 
     if (password != confirmPassword) {
-      Get.snackbar("Error", "Passwords do not match.");
-      return;
-    }
-
-    if (password.length < 6) {
-      Get.snackbar("Error", "Password must be at least 6 characters long.");
+      Get.snackbar('Error', 'Passwords do not match.');
       return;
     }
 
     try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+      final response = await _supabase.auth.signUp(
         email: email,
         password: password,
+        data: {'username': name},
       );
 
-      await userCredential.user?.updateDisplayName(name);
-      await _firestoreService.createUserInFirestore(
-        userCredential.user!,
-        name: name,
-      );
+      if (response.user != null) {
+        await _supabase.from('profiles').upsert({
+          'id': response.user!.id,
+          'name': name,
+          'email': email,
+          'updated_at': DateTime.now().toIso8601String(),
+        });
 
-      Get.offAll(() => CommunityScreen());
-      Get.snackbar("Success", "Account created successfully!");
+        Get.snackbar('Success', 'Account created successfully!');
+        Get.offAllNamed('/community');
+      }
+    } on AuthException catch (e) {
+      Get.snackbar('Error', e.message);
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      Get.snackbar('Error', 'An unexpected error occurred');
     }
   }
 
@@ -90,6 +97,8 @@ class RegisterController extends GetxController {
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
+    termsRecognizer.dispose();
+    privacyRecognizer.dispose();
     super.onClose();
   }
 }

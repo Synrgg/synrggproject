@@ -8,8 +8,7 @@ import '../app/controllers/community_screen_controller.dart';
 class CustomBottomNavigationBar extends StatelessWidget {
   final CommunityScreenController controller;
 
-  const CustomBottomNavigationBar({Key? key, required this.controller})
-      : super(key: key);
+  const CustomBottomNavigationBar({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               break;
             case 4:
               // Add logic for the "Chat" icon
-              Get.offAll(() => ChatScreen());
+              Get.offAll(() => const ChatScreen());
 
               break;
             default:

@@ -50,28 +50,30 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyCxQGPXFvWQDmJIZkACzatUbOhkI0ivses',
     appId: '1:809372470283:web:f10f1d2b3884a7dd610b0e',
     messagingSenderId: '809372470283',
-    projectId: 'synergee-1255f',
-    authDomain: 'synergee-1255f.firebaseapp.com',
-    storageBucket: 'synergee-1255f.firebasestorage.app',
+    projectId: 'synrgg-aa66b',
+    authDomain: 'synrgg-aa66b.firebaseapp.com',
+    storageBucket: 'synrgg-aa66b.firebasestorage.app',
     measurementId: 'G-CNBWJ93TLG',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAg-2iadcQRjdNH1YFr1JZeVxqRPlpv7yI',
-    appId: '1:809372470283:android:87e7c4754eb750b8610b0e',
-    messagingSenderId: '809372470283',
-    projectId: 'synergee-1255f',
-    storageBucket: 'synergee-1255f.firebasestorage.app',
+    apiKey: 'AIzaSyB27b-zuZP5aSYNHb3rgWY8OSvwEN8_WTY',
+    appId: '1:217397558295:android:dfd942bb1b5c7c27c47052',
+    messagingSenderId: '217397558295',
+    projectId: 'synrgg-aa66b',
+    storageBucket: 'synrgg-aa66b.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAARlRWnCU-9fEfIwN1u6-oLuuw3aLVONg',
     appId: '1:809372470283:ios:e2f75a53caca9fde610b0e',
     messagingSenderId: '809372470283',
-    projectId: 'synergee-1255f',
-    storageBucket: 'synergee-1255f.firebasestorage.app',
-    androidClientId: '809372470283-gg75nr0vc1val9c01tut34ignbimqbal.apps.googleusercontent.com',
-    iosClientId: '809372470283-37itbarq17vk7p2cuo7fs1eo8sdvqops.apps.googleusercontent.com',
+    projectId: 'synrgg-aa66b',
+    storageBucket: 'synrgg-aa66b.firebasestorage.app',
+    androidClientId:
+        '809372470283-gg75nr0vc1val9c01tut34ignbimqbal.apps.googleusercontent.com',
+    iosClientId:
+        '809372470283-37itbarq17vk7p2cuo7fs1eo8sdvqops.apps.googleusercontent.com',
     iosBundleId: 'com.example.synergee',
   );
 }

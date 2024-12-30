@@ -7,7 +7,7 @@ import '../app/controllers/community_screen_controller.dart';
 class FloatingActionMenu extends StatelessWidget {
   final CommunityScreenController controller;
 
-  const FloatingActionMenu({required this.controller});
+  const FloatingActionMenu({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class FloatingActionMenu extends StatelessWidget {
                 if (controller.isFloatingMenuOpen.value) ...[
                   _buildFloatingMenuItem(
                     icon: Icons.post_add,
-                    color: Color.fromARGB(255, 129, 34, 213),
+                    color: const Color.fromARGB(255, 129, 34, 213),
                     label: "Add Post",
                     onPressed: () {
                       print("Add Post pressed");
@@ -40,7 +40,7 @@ class FloatingActionMenu extends StatelessWidget {
                   ),
                   _buildFloatingMenuItem(
                     icon: Icons.create,
-                    color: Color.fromARGB(255, 129, 34, 213),
+                    color: const Color.fromARGB(255, 129, 34, 213),
                     label: "Create Post",
                     onPressed: () {
                       print("Create Post pressed");
@@ -48,7 +48,7 @@ class FloatingActionMenu extends StatelessWidget {
                   ),
                   _buildFloatingMenuItem(
                     icon: Icons.upload_file,
-                    color: Color.fromARGB(255, 129, 34, 213),
+                    color: const Color.fromARGB(255, 129, 34, 213),
                     label: "Upload Post",
                     onPressed: () {
                       print("Upload Post pressed");
@@ -56,7 +56,7 @@ class FloatingActionMenu extends StatelessWidget {
                   ),
                 ],
                 FloatingActionButton(
-                  backgroundColor: Color.fromARGB(255, 129, 34, 213),
+                  backgroundColor: const Color.fromARGB(255, 129, 34, 213),
                   onPressed: controller.toggleFloatingMenu,
                   child: AnimatedRotation(
                     duration: const Duration(milliseconds: 300),

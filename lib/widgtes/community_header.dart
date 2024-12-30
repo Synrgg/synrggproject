@@ -4,8 +4,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 class CommunityHeader extends StatelessWidget {
   final String communityName;
 
-  const CommunityHeader({Key? key, required this.communityName})
-      : super(key: key);
+  const CommunityHeader({super.key, required this.communityName});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class CommunityHeader extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 5.w,
-              backgroundColor: Color.fromARGB(255, 129, 34, 213),
+              backgroundColor: const Color.fromARGB(255, 129, 34, 213),
               child: const Icon(
                 Icons.group,
                 color: Colors.black,
@@ -35,7 +34,7 @@ class CommunityHeader extends StatelessWidget {
           ],
         ),
         IconButton(
-          icon: Icon(Icons.more_vert, color: Colors.white),
+          icon: const Icon(Icons.more_vert, color: Colors.white),
           onPressed: () {
             // Handle more options
           },

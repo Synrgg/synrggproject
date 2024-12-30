@@ -7,9 +7,9 @@ class ContentCard extends StatelessWidget {
   static int currentIndex = 0;
 
   const ContentCard({
-    Key? key,
+    super.key,
     required this.item,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

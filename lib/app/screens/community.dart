@@ -12,6 +12,8 @@ class CommunityScreen extends StatelessWidget {
   final CommunityScreenController controller =
       Get.find<CommunityScreenController>();
 
+  CommunityScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);

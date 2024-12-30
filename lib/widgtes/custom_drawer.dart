@@ -8,7 +8,7 @@ import '../app/controllers/auth_controller.dart'; // Import AuthController
 class CustomDrawer extends StatelessWidget {
   final CommunityScreenController controller;
 
-  const CustomDrawer({Key? key, required this.controller}) : super(key: key);
+  const CustomDrawer({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class CustomDrawer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             radius: 35,
             backgroundImage: AssetImage('assets/images/avatar.jpg'),
             backgroundColor: Colors.transparent,
@@ -102,7 +102,7 @@ class CustomDrawer extends StatelessWidget {
                   Shadow(
                     color: Colors.cyanAccent.withOpacity(0.8),
                     blurRadius: 5,
-                    offset: Offset(1, 2),
+                    offset: const Offset(1, 2),
                   ),
                 ],
               ),
@@ -161,7 +161,7 @@ class CustomDrawer extends StatelessWidget {
             Shadow(
               color: Colors.cyanAccent.withOpacity(0.8),
               blurRadius: 3,
-              offset: Offset(1, 1),
+              offset: const Offset(1, 1),
             ),
           ],
         ),

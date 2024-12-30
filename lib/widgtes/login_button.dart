@@ -26,12 +26,12 @@ class GamerLoginButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(borderRadius),
                 boxShadow: [
                   BoxShadow(
-                    color: Color.fromARGB(255, 147, 54, 229).withOpacity(0.3),
+                    color: const Color.fromARGB(255, 147, 54, 229).withOpacity(0.3),
                     blurRadius: 20,
                     spreadRadius: 3,
                   ),
                   BoxShadow(
-                    color: Color.fromARGB(255, 147, 54, 229).withOpacity(0.3),
+                    color: const Color.fromARGB(255, 147, 54, 229).withOpacity(0.3),
                     blurRadius: 30,
                     spreadRadius: 10,
                   ),
@@ -51,13 +51,13 @@ class GamerLoginButton extends StatelessWidget {
                 end: Alignment.bottomRight,
               ),
               border: Border.all(
-                color: Color.fromARGB(255, 147, 54, 229),
+                color: const Color.fromARGB(255, 147, 54, 229),
                 width: 2,
               ),
               borderRadius: BorderRadius.circular(borderRadius),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromARGB(255, 147, 54, 229).withOpacity(0.3),
+                  color: const Color.fromARGB(255, 147, 54, 229).withOpacity(0.3),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),

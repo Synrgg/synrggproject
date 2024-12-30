@@ -6,7 +6,7 @@ import 'post_card.dart';
 class PostList extends StatelessWidget {
   final CommunityScreenController controller;
 
-  const PostList({required this.controller});
+  const PostList({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

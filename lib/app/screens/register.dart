@@ -58,7 +58,7 @@ class RegisterScreen extends StatelessWidget {
       style: GoogleFonts.orbitron(
         fontSize: 20.sp,
         fontWeight: FontWeight.bold,
-        color: Color.fromARGB(255, 129, 34, 213),
+        color: const Color.fromARGB(255, 129, 34, 213),
       ),
     );
   }
@@ -266,7 +266,7 @@ class RegisterScreen extends StatelessWidget {
         child: ElevatedButton(
           onPressed: controller.register,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 129, 34, 213),
+            backgroundColor: const Color.fromARGB(255, 129, 34, 213),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),

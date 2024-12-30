@@ -1,61 +1,67 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:synergee/app/data/services/firestore_user_service.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:synergee/app/data/services/supabase_user_service.dart';
 
 class AuthController extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirestoreUserService _firestoreService = FirestoreUserService();
+  final SupabaseClient _supabase = Supabase.instance.client;
+  final SupabaseUserService _userService = SupabaseUserService();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    // clientId:
+    //     '217397558295-qdf6p0o4hg37ovau3rs1ml8bush1c30i.apps.googleusercontent.com',
+    serverClientId:
+        '217397558295-l2v6mjc3buq3mco28guirgtgicssgcit.apps.googleusercontent.com', // Web Client ID
+  );
 
   var isSignedIn = false.obs;
-  User? get user => _auth.currentUser;
+  User? get user => _supabase.auth.currentUser;
 
   @override
   void onInit() {
     super.onInit();
 
     // Listen to authentication state changes
-    _auth.authStateChanges().listen((User? user) async {
-      if (user == null) {
-        isSignedIn.value = false;
-        Get.offAllNamed('/onboarding'); // Navigate to Onboarding
-      } else {
+    _supabase.auth.onAuthStateChange.listen((event) {
+      if (event.event == AuthChangeEvent.signedIn) {
         isSignedIn.value = true;
-
-        // Ensure user exists in Firestore
-        await saveUserToFirestore(user);
+        saveUserToDatabase(event.session!.user);
 
         Get.offAllNamed('/home'); // Navigate to Home
+      } else if (event.event == AuthChangeEvent.signedOut) {
+        isSignedIn.value = false;
+        Get.offAllNamed('/onboarding'); // Navigate to Onboarding
       }
     });
   }
 
   Future<void> loginWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return;
 
-      final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
+      final googleAuth = await googleUser.authentication;
+      final accessToken = googleAuth.accessToken;
+      final idToken = googleAuth.idToken;
 
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      UserCredential userCredential =
-      await _auth.signInWithCredential(credential);
-
-      if (userCredential.user != null) {
-        await saveUserToFirestore(userCredential.user!);
+      if (accessToken == null || idToken == null) {
+        throw 'Authentication failed: Missing tokens.';
       }
 
-      Get.snackbar(
-        "Login Success",
-        "Welcome, ${userCredential.user?.displayName ?? "User"}!",
-        snackPosition: SnackPosition.BOTTOM,
+      final response = await _supabase.auth.signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: idToken,
+        accessToken: accessToken,
       );
+
+      if (response.session != null) {
+        saveUserToDatabase(response.session!.user);
+
+        Get.snackbar(
+          "Login Success",
+          "Welcome, ${response.user?.email ?? "User"}!",
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
     } catch (error) {
       Get.snackbar(
         "Login Error",
@@ -68,12 +74,15 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     try {
       await _googleSignIn.signOut();
-      await _auth.signOut();
+      await _supabase.auth.signOut();
 
       isSignedIn.value = false;
 
-      Get.snackbar("Logout", "You have been logged out",
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        "Logout",
+        "You have been logged out",
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } catch (error) {
       Get.snackbar(
         "Logout Error",
@@ -83,14 +92,12 @@ class AuthController extends GetxController {
     }
   }
 
-  // Add this function to save the user to Firestore
-  Future<void> saveUserToFirestore(User user) async {
+  Future<void> saveUserToDatabase(User user) async {
     try {
-      await _firestoreService.createUserInFirestore(user);
-
+      await _userService.createUser(user);
       Get.snackbar(
         "User Synced",
-        "User information has been updated in Firestore",
+        "User information has been updated in the database",
         snackPosition: SnackPosition.BOTTOM,
       );
     } catch (error) {

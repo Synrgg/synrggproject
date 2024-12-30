@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:synergee/widgtes/card.dart';
 import 'package:synergee/widgtes/custom_app_bar.dart';
 import 'package:synergee/widgtes/custom_bottom_navigator_bar.dart';
 import '../controllers/community_screen_controller.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  HomePage({super.key});
 
   final CommunityScreenController controller =
       Get.put(CommunityScreenController());

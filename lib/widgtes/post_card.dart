@@ -13,7 +13,7 @@ class PostCard extends StatelessWidget {
   final VoidCallback onShare;
 
   const PostCard({
-    Key? key,
+    super.key,
     required this.communityName,
     required this.postTitle,
     required this.description,
@@ -23,7 +23,7 @@ class PostCard extends StatelessWidget {
     required this.onLike,
     required this.onComment,
     required this.onShare,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class PostCard extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 5.w,
-                    backgroundColor: Color.fromARGB(255, 129, 34, 213),
+                    backgroundColor: const Color.fromARGB(255, 129, 34, 213),
                   ),
                   SizedBox(width: 3.w),
                   Text(

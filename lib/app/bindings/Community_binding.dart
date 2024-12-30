@@ -4,6 +4,6 @@ import '../controllers/community_screen_controller.dart';
 class CommunityScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<CommunityScreenController>(() => CommunityScreenController());
+    Get.put(CommunityScreenController(), permanent: true);
   }
 }

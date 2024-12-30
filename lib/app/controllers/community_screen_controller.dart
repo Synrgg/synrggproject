@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CommunityScreenController extends GetxController {
   // Observable variables for user information
@@ -23,39 +21,9 @@ class CommunityScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Fetch user details from Firebase
-    fetchUserDetails();
-    // Initialize posts
     loadPosts();
     debounce(searchQuery, (_) => filterPosts(),
         time: const Duration(milliseconds: 300));
-  }
-
-  Future<void> fetchUserDetails() async {
-    try {
-      User? currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
-        userEmail.value = currentUser.email ?? 'No email';
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser.uid)
-            .get();
-
-        if (userDoc.exists) {
-          userName.value = userDoc['name'] ?? 'No name';
-          userAvatarPath.value =
-              userDoc['avatarPath'] ?? 'assets/user_avatar.png';
-        } else {
-          userName.value = 'Anonymous';
-        }
-      }
-    } catch (e) {
-      Get.snackbar(
-        "Error",
-        "Failed to fetch user details. Please try again.",
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    }
   }
 
   void loadPosts() {

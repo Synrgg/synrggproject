@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ImagePlaceholder extends StatelessWidget {
-  const ImagePlaceholder({Key? key}) : super(key: key);
+  const ImagePlaceholder({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 class PostDescription extends StatelessWidget {
   final String description;
 
-  const PostDescription({Key? key, required this.description}) : super(key: key);
+  const PostDescription({super.key, required this.description});
 
   @override
   Widget build(BuildContext context) {

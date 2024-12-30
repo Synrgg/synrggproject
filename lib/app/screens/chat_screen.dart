@@ -4,6 +4,8 @@ import 'package:synergee/app/screens/home.dart';
 import '../controllers/chat_controller.dart';
 
 class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -20,16 +22,16 @@ class _ChatScreenState extends State<ChatScreen> {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color.fromARGB(255, 129, 34, 213)),
+          icon: const Icon(Icons.arrow_back, color: Color.fromARGB(255, 129, 34, 213)),
           onPressed: () {
             Get.offAll(() => HomePage());
 
           },
         ),
         title: AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           child: chatController.searchText.isEmpty
-              ? Row(
+              ? const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
@@ -45,14 +47,14 @@ class _ChatScreenState extends State<ChatScreen> {
             ],
           )
               : TextField(
-            key: ValueKey("search"),
+            key: const ValueKey("search"),
             autofocus: true,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Search users...',
               hintStyle: TextStyle(color: Colors.white54),
               border: InputBorder.none,
             ),
-            style: TextStyle(color: Colors.white, fontSize: 18),
+            style: const TextStyle(color: Colors.white, fontSize: 18),
             onChanged: (value) {
               chatController.updateSearchText(value);
             },
@@ -62,14 +64,14 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
             icon: Icon(
               chatController.searchText.isEmpty ? Icons.search : Icons.close,
-              color: Color.fromARGB(255, 129, 34, 213),
+              color: const Color.fromARGB(255, 129, 34, 213),
             ),
             onPressed: () {
               chatController.toggleSearch();
             },
           ),
           IconButton(
-            icon: Icon(Icons.group, color: Color.fromARGB(255, 129, 34, 213)),
+            icon: const Icon(Icons.group, color: Color.fromARGB(255, 129, 34, 213)),
             onPressed: () {
               Get.snackbar(
                 "Feature",
@@ -82,13 +84,13 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Obx(() {
         if (chatController.isLoading.value) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(color: Color.fromARGB(255, 129, 34, 213)),
           );
         }
 
         if (chatController.filteredUsers.isEmpty) {
-          return Center(
+          return const Center(
             child: Text(
               'No users found.',
               style: TextStyle(color: Colors.white70, fontSize: 18),
@@ -97,21 +99,21 @@ class _ChatScreenState extends State<ChatScreen> {
         }
 
         return ListView.builder(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           itemCount: chatController.filteredUsers.length,
           itemBuilder: (context, index) {
             final user = chatController.filteredUsers[index];
             return Container(
-              margin: EdgeInsets.symmetric(vertical: 8),
-              padding: EdgeInsets.all(10),
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.grey[900],
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                    color: Color.fromARGB(255, 129, 34, 213).withOpacity(0.5),
+                    color: const Color.fromARGB(255, 129, 34, 213).withOpacity(0.5),
                     blurRadius: 8,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -123,10 +125,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     backgroundImage: NetworkImage(user["photoURL"] ?? ''),
                     backgroundColor: Colors.grey[800],
                     child: user["photoURL"] == ""
-                        ? Icon(Icons.person, color: Color.fromARGB(255, 129, 34, 213))
+                        ? const Icon(Icons.person, color: Color.fromARGB(255, 129, 34, 213))
                         : null,
                   ),
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
                   // User Details
                   Expanded(
                     child: Column(
@@ -134,7 +136,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       children: [
                         Text(
                           user["displayName"] ?? 'Anonymous',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -142,14 +144,14 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         Text(
                           user["email"] ?? '',
-                          style: TextStyle(color: Colors.white54, fontSize: 14),
+                          style: const TextStyle(color: Colors.white54, fontSize: 14),
                         ),
                       ],
                     ),
                   ),
                   // Action (e.g., Start Chat)
                   IconButton(
-                    icon: Icon(Icons.message, color: Color.fromARGB(255, 129, 34, 213)),
+                    icon: const Icon(Icons.message, color: Color.fromARGB(255, 129, 34, 213)),
                     onPressed: () {
                       Get.snackbar(
                         "Chat",

@@ -1,50 +1,34 @@
 {
   "project_info": {
-    "project_number": "809372470283",
-    "firebase_url": "https://synergee-1255f-default-rtdb.firebaseio.com",
-    "project_id": "synergee-1255f",
-    "storage_bucket": "synergee-1255f.firebasestorage.app"
+    "project_number": "217397558295",
+    "project_id": "synrgg-aa66b",
+    "storage_bucket": "synrgg-aa66b.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:809372470283:android:87e7c4754eb750b8610b0e",
+        "mobilesdk_app_id": "1:217397558295:android:dfd942bb1b5c7c27c47052",
         "android_client_info": {
-          "package_name": "com.example.synergee"
+          "package_name": "com.synrgg.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "809372470283-bcq1htititp9akuocm4dov02ank25i3i.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.synergee",
-            "certificate_hash": "376b05f6ebfd3668e52e32737256e0207abe7ed0"
-          }
-        },
-        {
-          "client_id": "809372470283-ejai0uhrdp8oaa55tvol1l2ukd790s03.apps.googleusercontent.com",
+          "client_id": "217397558295-l2v6mjc3buq3mco28guirgtgicssgcit.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAg-2iadcQRjdNH1YFr1JZeVxqRPlpv7yI"
+          "current_key": "AIzaSyB27b-zuZP5aSYNHb3rgWY8OSvwEN8_WTY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "809372470283-ejai0uhrdp8oaa55tvol1l2ukd790s03.apps.googleusercontent.com",
+              "client_id": "217397558295-l2v6mjc3buq3mco28guirgtgicssgcit.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "809372470283-37itbarq17vk7p2cuo7fs1eo8sdvqops.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.synergee"
-              }
             }
           ]
         }

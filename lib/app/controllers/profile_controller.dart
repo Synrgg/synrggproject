@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:get/get.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileController extends GetxController {
+  final SupabaseClient _supabase = Supabase.instance.client;
+
   var isLoading = true.obs;
   var username = ''.obs;
   var imageUrls = <String>[].obs;
@@ -17,22 +17,20 @@ class ProfileController extends GetxController {
     super.onInit();
     fetchUserData();
     fetchUserImages();
-    initializeDummyGamesData(); // Initialize dummy data first
-    fetchGamesData(); // Fetch game data dynamically
+    initializeDummyGamesData();
+    fetchGamesData();
   }
 
   Future<void> fetchUserData() async {
     try {
       isLoading(true);
-      User? user = FirebaseAuth.instance.currentUser;
-
+      final user = _supabase.auth.currentUser;
       if (user == null) {
         throw Exception("User not logged in.");
       }
-
-      username.value = user.displayName ?? "Guest";
+      username.value = user.userMetadata?['username'] ?? "Guest";
     } catch (e) {
-      print("Error fetching user data: $e");
+      Get.snackbar('Error', e.toString());
     } finally {
       isLoading(false);
     }
@@ -41,25 +39,20 @@ class ProfileController extends GetxController {
   Future<void> fetchUserImages() async {
     try {
       isLoading(true);
-      User? user = FirebaseAuth.instance.currentUser;
-
+      final user = _supabase.auth.currentUser;
       if (user == null) {
         throw Exception("User not logged in.");
       }
 
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
+      final data = await _supabase
+          .from('profiles')
+          .select('image_urls')
+          .eq('id', user.id)
+          .single();
 
-      if (snapshot.exists && snapshot.data() != null) {
-        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        if (data.containsKey('imageUrls') && data['imageUrls'] != null) {
-          imageUrls.value = List<String>.from(data['imageUrls']);
-        }
-      }
+      imageUrls.value = List<String>.from(data['image_urls'] ?? []);
     } catch (e) {
-      print("Error fetching user images: $e");
+      Get.snackbar('Error', e.toString());
     } finally {
       isLoading(false);
     }
@@ -118,16 +111,19 @@ class ProfileController extends GetxController {
         final List<dynamic> gameList = json.decode(response.body);
 
         // Map the game data to a List<Map<String, String>>
-        gamesData.value = gameList.map((game) {
-          // Safely cast all dynamic values to String
-          return {
-            "name": game["name"]?.toString() ?? "Unknown",
-            "rank": game["rank"]?.toString() ?? "N/A",
-            "kda": game["kda"]?.toString() ?? "N/A",
-            "matches": game["matches"]?.toString() ?? "0",
-            "winrate": game["winrate"]?.toString() ?? "0%",
-          };
-        }).cast<Map<String, String>>().toList();
+        gamesData.value = gameList
+            .map((game) {
+              // Safely cast all dynamic values to String
+              return {
+                "name": game["name"]?.toString() ?? "Unknown",
+                "rank": game["rank"]?.toString() ?? "N/A",
+                "kda": game["kda"]?.toString() ?? "N/A",
+                "matches": game["matches"]?.toString() ?? "0",
+                "winrate": game["winrate"]?.toString() ?? "0%",
+              };
+            })
+            .cast<Map<String, String>>()
+            .toList();
       } else {
         print("Failed to fetch game data. Status code: ${response.statusCode}");
       }
@@ -141,33 +137,23 @@ class ProfileController extends GetxController {
   Future<void> uploadImage(File imageFile) async {
     try {
       isLoading(true);
-      User? user = FirebaseAuth.instance.currentUser;
-
+      final user = _supabase.auth.currentUser;
       if (user == null) {
         throw Exception("User not logged in.");
       }
 
-      String userId = user.uid;
-      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-      String filePath = 'uploads/$userId/$fileName';
+      final filePath =
+          'profile/${user.id}/${DateTime.now().millisecondsSinceEpoch}.jpg';
 
-      print("Uploading file to: $filePath");
+      await _supabase.storage.from('media').upload(filePath, imageFile);
+      final imageUrl = _supabase.storage.from('media').getPublicUrl(filePath);
+      imageUrls.add(imageUrl);
 
-      // Upload the file to Firebase Storage
-      UploadTask uploadTask =
-      FirebaseStorage.instance.ref(filePath).putFile(imageFile);
-      TaskSnapshot snapshot = await uploadTask;
-      String downloadUrl = await snapshot.ref.getDownloadURL();
-
-      print("File uploaded successfully. Download URL: $downloadUrl");
-
-      // Save the URL to Firestore
-      imageUrls.add(downloadUrl);
-      await FirebaseFirestore.instance.collection('users').doc(userId).set({
-        'imageUrls': imageUrls,
-      }, SetOptions(merge: true));
+      await _supabase
+          .from('profiles')
+          .update({'image_urls': imageUrls}).eq('id', user.id);
     } catch (e) {
-      print("Error uploading image: $e");
+      Get.snackbar('Error', e.toString());
     } finally {
       isLoading(false);
     }
