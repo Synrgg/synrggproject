@@ -1,24 +1,51 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ChatController extends GetxController {
-  RxList<Map<String, dynamic>> users = <Map<String, dynamic>>[].obs;
-  RxList<Map<String, dynamic>> filteredUsers = <Map<String, dynamic>>[].obs;
-  var searchText = ''.obs;
-  var isLoading = false.obs;
+  var isLoading = true.obs;
+  var allUsers = <Map<String, dynamic>>[].obs;
+
+  final SupabaseClient supabase = Supabase.instance.client;
+  String? currentUserId;
 
   @override
   void onInit() {
     super.onInit();
-    fetchUsers();
+    fetchCurrentUserId();
+    fetchAllUsers();
   }
 
-  Future<void> fetchUsers() async {
+  // Fetch the currently authenticated user's ID
+  void fetchCurrentUserId() {
+    final user = supabase.auth.currentUser;
+    if (user != null) {
+      currentUserId = user.id;
+    } else {
+      Get.snackbar('Error', 'No authenticated user found.');
+    }
+  }
+
+  // Fetch all users from the `users` table
+  Future<void> fetchAllUsers() async {
+    if (currentUserId == null) {
+      Get.snackbar('Error', 'User ID is null. Authentication required.');
+      return;
+    }
+
+    isLoading.value = true;
+
     try {
-      isLoading.value = true;
-      final snapshot = await FirebaseFirestore.instance.collection('users').get();
-      users.value = snapshot.docs.map((doc) => doc.data()).toList();
-      filteredUsers.value = users; // Initially, show all users
+      // Fetch users excluding the current user
+      final response = await supabase
+          .from('users') // Use the correct table name
+          .select('id, display_name, avatar_url, last_seen')
+          .neq('id', currentUserId!); // Exclude current user
+
+      if (response != null) {
+        allUsers.assignAll(List<Map<String, dynamic>>.from(response));
+      } else {
+        allUsers.clear(); // Clear if no users found
+      }
     } catch (e) {
       Get.snackbar('Error', 'Failed to fetch users: $e');
     } finally {
@@ -26,26 +53,11 @@ class ChatController extends GetxController {
     }
   }
 
-  void updateSearchText(String text) {
-    searchText.value = text;
-    if (text.isEmpty) {
-      filteredUsers.value = users; // Reset to all users if the search is cleared
-    } else {
-      filteredUsers.value = users
-          .where((user) => user["displayName"]
-          .toString()
-          .toLowerCase()
-          .contains(text.toLowerCase()))
-          .toList();
-    }
-  }
 
-  void toggleSearch() {
-    if (searchText.isEmpty) {
-      searchText.value = '';
-      filteredUsers.value = users; // Reset search
-    } else {
-      searchText.value = '';
-    }
+  // Generate a unique chat room ID for two users
+  String getChatRoomId(String currentUserId, String userId) {
+    return currentUserId.hashCode <= userId.hashCode
+        ? '$currentUserId-$userId'
+        : '$userId-$currentUserId';
   }
 }

@@ -32,7 +32,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               break;
             case 4:
               // Add logic for the "Chat" icon
-              Get.offAll(() => const ChatScreen());
+              Get.offAll(() => ChatScreen());
 
               break;
             default:

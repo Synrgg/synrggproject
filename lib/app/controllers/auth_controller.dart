@@ -7,8 +7,8 @@ class AuthController extends GetxController {
   final SupabaseClient _supabase = Supabase.instance.client;
   final SupabaseUserService _userService = SupabaseUserService();
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    // clientId:
-    //     '217397558295-qdf6p0o4hg37ovau3rs1ml8bush1c30i.apps.googleusercontent.com',
+    clientId:
+        '217397558295-qdf6p0o4hg37ovau3rs1ml8bush1c30i.apps.googleusercontent.com',
     serverClientId:
         '217397558295-l2v6mjc3buq3mco28guirgtgicssgcit.apps.googleusercontent.com', // Web Client ID
   );
@@ -92,7 +92,7 @@ class AuthController extends GetxController {
 
   Future<void> saveUserToDatabase(User user) async {
     try {
-      await _userService.createUser(user);
+      // await _userService.createUser(user);
       Get.snackbar(
         "User Synced",
         "User information has been updated in the database",

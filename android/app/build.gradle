@@ -47,7 +47,7 @@ android {
 
     defaultConfig {
         applicationId "com.synrgg.app"
-        minSdkVersion 34
+        minSdkVersion 33
         targetSdkVersion flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
