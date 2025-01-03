@@ -41,18 +41,13 @@ class ChatController extends GetxController {
           .select('id, display_name, avatar_url, last_seen')
           .neq('id', currentUserId!); // Exclude current user
 
-      if (response != null) {
-        allUsers.assignAll(List<Map<String, dynamic>>.from(response));
-      } else {
-        allUsers.clear(); // Clear if no users found
-      }
+      allUsers.assignAll(List<Map<String, dynamic>>.from(response));
     } catch (e) {
       Get.snackbar('Error', 'Failed to fetch users: $e');
     } finally {
       isLoading.value = false;
     }
   }
-
 
   // Generate a unique chat room ID for two users
   String getChatRoomId(String currentUserId, String userId) {
