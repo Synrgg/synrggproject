@@ -189,7 +189,7 @@ class LoginScreen extends GetView<LoginController> {
                               } catch (e) {
                                 Get.snackbar(
                                   "Error",
-                                  "Failed to sign in with Google",
+                                  "Failed to sign in with Google${e}",
                                   snackPosition: SnackPosition.BOTTOM,
                                 );
                               }

@@ -23,13 +23,11 @@ class RegisterController extends GetxController {
     super.onInit();
     termsRecognizer = TapGestureRecognizer()
       ..onTap = () {
-        // Navigate to Terms and Conditions
         Get.toNamed('/terms');
       };
 
     privacyRecognizer = TapGestureRecognizer()
       ..onTap = () {
-        // Navigate to Privacy Policy
         Get.toNamed('/privacy');
       };
   }

@@ -12,9 +12,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
-    url: 'https://vjggpouicbdedpokiziq.supabase.co',
+    url: 'https://alhsisagxymlexjkxvti.supabase.co',
     anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqZ2dwb3VpY2JkZWRwb2tpemlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU1NDg0MTYsImV4cCI6MjA1MTEyNDQxNn0.b8oMmYh5XoJiW27mvYq7Vdmeuo-fjKhyKYnFP6xl6zA',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsaHNpc2FneHltbGV4amt4dnRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU5MDg3OTQsImV4cCI6MjA1MTQ4NDc5NH0.d18uDYgTnxm68G6o8kBUudUzi_blr_H1iYJZEFDwPW0',
   );
 
   Get.put(AuthController(), permanent: true);
