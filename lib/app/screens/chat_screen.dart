@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/chat_controller.dart';
 import 'home.dart'; // Import your HomePage class
-import 'chat_page.dart';
 
 class ChatScreen extends StatelessWidget {
   final ChatController chatController = Get.put(ChatController());
@@ -15,10 +14,12 @@ class ChatScreen extends StatelessWidget {
         backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color.fromARGB(255, 129, 34, 213)),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Color.fromARGB(255, 129, 34, 213),
+          ),
           onPressed: () {
-            // Navigate back to the homepage
-            Get.offAll(() => HomePage());
+            Get.offAll(() => HomePage()); // Navigate back to the homepage
           },
         ),
         title: Text(
@@ -61,7 +62,7 @@ class ChatScreen extends StatelessWidget {
               child: ListTile(
                 leading: CircleAvatar(
                   radius: 25,
-                  backgroundImage: user['avatar_url'] != null
+                  backgroundImage: user['assets/images/avatar.jpg'] != null
                       ? NetworkImage(user['avatar_url'])
                       : null,
                   backgroundColor: Colors.grey[800],
@@ -80,22 +81,10 @@ class ChatScreen extends StatelessWidget {
                   'Last seen: ${user['last_seen'] ?? 'Recently'}',
                   style: TextStyle(color: Colors.white70),
                 ),
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.chat_bubble_outline,
-                        color: Color.fromARGB(255, 129, 34, 213)),
-                  ],
-                ),
+                trailing: Icon(Icons.chat_bubble_outline,
+                    color: Color.fromARGB(255, 129, 34, 213)),
                 onTap: () {
-                  final chatRoomId = chatController.getChatRoomId(
-                      chatController.currentUserId!, user['id']);
-                  Get.to(() => ChatPage(
-                    chatId: chatRoomId,
-                    userId: user['id'],
-                    displayName: user['display_name'],
-                    photoURL: user['avatar_url'],
-                  ));
+                  // Handle chat navigation here
                 },
               ),
             );

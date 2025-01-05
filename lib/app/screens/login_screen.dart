@@ -18,6 +18,7 @@ class LoginScreen extends GetView<LoginController> {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return Scaffold(
+
           resizeToAvoidBottomInset: false,
           body: Center(
             child: Padding(
