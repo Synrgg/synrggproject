@@ -34,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
-      await controller.uploadImage(imageFile);
+      // await controller.uploadImage(imageFile);
     }
   }
 

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +15,6 @@ class ProfileController extends GetxController {
   void onInit() {
     super.onInit();
     fetchUserData();
-    // fetchUserImages();
     initializeDummyGamesData();
     fetchGamesData();
   }
@@ -28,35 +26,25 @@ class ProfileController extends GetxController {
       if (user == null) {
         throw Exception("User not logged in.");
       }
-      username.value = user.userMetadata?['username'] ?? "Guest";
+
+      // Query the `users` table to fetch the user's name
+      final response = await _supabase
+          .from('users')
+          .select('name')
+          .eq('id', user.id)
+          .maybeSingle();
+
+      if (response != null && response['name'] != null) {
+        username.value = response['name'];
+      } else {
+        username.value = "Guest";
+      }
     } catch (e) {
       Get.snackbar('Error', e.toString());
     } finally {
       isLoading(false);
     }
   }
-
-  // Future<void> fetchUserImages() async {
-  //   try {
-  //     isLoading(true);
-  //     final user = _supabase.auth.currentUser;
-  //     if (user == null) {
-  //       throw Exception("User not logged in.");
-  //     }
-
-  //     final data = await _supabase
-  //         .from('profiles')
-  //         .select('image_urls')
-  //         .eq('id', user.id)
-  //         .single();
-
-  //     imageUrls.value = List<String>.from(data['image_urls'] ?? []);
-  //   } catch (e) {
-  //     Get.snackbar('Error', e.toString());
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
 
   void initializeDummyGamesData() {
     gamesData.value = [
@@ -127,31 +115,6 @@ class ProfileController extends GetxController {
       }
     } catch (e) {
       print("Error fetching games data: $e");
-    } finally {
-      isLoading(false);
-    }
-  }
-
-  Future<void> uploadImage(File imageFile) async {
-    try {
-      isLoading(true);
-      final user = _supabase.auth.currentUser;
-      if (user == null) {
-        throw Exception("User not logged in.");
-      }
-
-      final filePath =
-          'profile/${user.id}/${DateTime.now().millisecondsSinceEpoch}.jpg';
-
-      await _supabase.storage.from('media').upload(filePath, imageFile);
-      final imageUrl = _supabase.storage.from('media').getPublicUrl(filePath);
-      imageUrls.add(imageUrl);
-
-      await _supabase
-          .from('profiles')
-          .update({'image_urls': imageUrls}).eq('id', user.id);
-    } catch (e) {
-      Get.snackbar('Error', e.toString());
     } finally {
       isLoading(false);
     }
