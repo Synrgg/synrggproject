@@ -17,11 +17,10 @@ class ChatController extends GetxController {
     isLoading.value = true;
 
     try {
-      final response = await supabase
-          .from('profiles')
-          .select('id, display_name, avatar_url, last_seen, created_at, email, updated_at ');
+      final response =
+          await supabase.from('users').select('id, name, created_at, email');
 
-      if (response != null && response.isNotEmpty) {
+      if (response.isNotEmpty) {
         allUsers.assignAll(List<Map<String, dynamic>>.from(response));
       } else {
         allUsers.clear();

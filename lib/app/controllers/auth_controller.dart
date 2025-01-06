@@ -6,9 +6,9 @@ class AuthController extends GetxController {
   final SupabaseClient _supabase = Supabase.instance.client;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     clientId:
-    '217397558295-qdf6p0o4hg37ovau3rs1ml8bush1c30i.apps.googleusercontent.com',
+        '217397558295-qdf6p0o4hg37ovau3rs1ml8bush1c30i.apps.googleusercontent.com',
     serverClientId:
-    '217397558295-l2v6mjc3buq3mco28guirgtgicssgcit.apps.googleusercontent.com',
+        '217397558295-l2v6mjc3buq3mco28guirgtgicssgcit.apps.googleusercontent.com',
   );
 
   var isSignedIn = false.obs;
@@ -17,105 +17,88 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    // Listen to authentication state changes
-    _supabase.auth.onAuthStateChange.listen((event) async {
-      switch (event.event) {
-        case AuthChangeEvent.signedIn:
-          isSignedIn.value = true;
-          await saveUserToDatabase(event.session!.user);
-          Get.offAllNamed('/home');
-          break;
-        case AuthChangeEvent.signedOut:
-          isSignedIn.value = false;
-          Get.offAllNamed('/onboarding');
-          break;
-        default:
-          break;
+    _supabase.auth.onAuthStateChange.listen((event) {
+      if (event.event == AuthChangeEvent.signedIn) {
+        isSignedIn.value = true;
+        Get.offAllNamed('/home');
+      } else if (event.event == AuthChangeEvent.signedOut) {
+        isSignedIn.value = false;
+        Get.offAllNamed('/onboarding');
       }
     });
   }
 
-  /// Initialize Authentication State
-  Future<void> initializeAuthState() async {
-    final currentUser = _supabase.auth.currentUser;
-    isSignedIn.value = currentUser != null;
-    if (currentUser != null) {
-      await saveUserToDatabase(currentUser);
-    }
-  }
-
-  /// Login with Google and Save User
   Future<AuthResponse> loginWithGoogle() async {
+    const webClientId =
+        '217397558295-l2v6mjc3buq3mco28guirgtgicssgcit.apps.googleusercontent.com';
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      serverClientId: webClientId,
+    );
+    final googleUser = await googleSignIn.signIn();
+    final googleAuth = await googleUser!.authentication;
+    final accessToken = googleAuth.accessToken;
+    final idToken = googleAuth.idToken;
+
+    final response = await _supabase.auth.signInWithIdToken(
+      provider: OAuthProvider.google,
+      idToken: idToken!,
+      accessToken: accessToken,
+    );
+    await _storeUserDetails();
+
+    return response;
+  }
+
+  Future<void> _storeUserDetails() async {
     try {
-      final googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        throw Exception("Google login was canceled by the user.");
-      }
+      final currentUser = user;
+      if (currentUser != null && currentUser.email != null) {
+        final existingUser = await _supabase
+            .from('users')
+            .select('id')
+            .eq('email', currentUser.email!)
+            .maybeSingle();
 
-      final googleAuth = await googleUser.authentication;
-      if (googleAuth.idToken == null || googleAuth.accessToken == null) {
-        throw Exception("Invalid Google token.");
+        if (existingUser == null) {
+          await _supabase.from('users').insert({
+            'id': currentUser.id,
+            'name': currentUser.userMetadata?['name'] ?? currentUser.email,
+            'email': currentUser.email,
+            'created_at': DateTime.now().toIso8601String(),
+          });
+        } else {
+          print("User already exists: ${currentUser.email}");
+        }
+      } else {
+        throw Exception("User or email is null");
       }
-
-      final response = await _supabase.auth.signInWithIdToken(
-        provider: OAuthProvider.google,
-        idToken: googleAuth.idToken!,
-        accessToken: googleAuth.accessToken!,
+    } catch (error) {
+      Get.snackbar(
+        "Error",
+        "Failed to store user details: ${error.toString()}",
+        snackPosition: SnackPosition.BOTTOM,
       );
-
-      if (response.session != null) {
-        await saveUserToDatabase(response.session!.user);
-      }
-
-      return response;
-    } catch (e) {
-      _showSnackbar("Login Error", e.toString());
-      rethrow;
     }
   }
 
-  /// Save User to Database
-  Future<void> saveUserToDatabase(User user) async {
-    try {
-      final userData = {
-        'id': user.id,
-        'display_name': user.userMetadata?['name'] ?? 'Anonymous',
-        'avatar_url': user.userMetadata?['avatar_url'],
-        'last_seen': DateTime.now().toIso8601String(),
-        'created_at': user.createdAt ?? DateTime.now().toIso8601String(),
-        'email': user.email,
-        'updated_at': DateTime.now().toIso8601String(),
-      };
-
-      await _supabase.from('profiles').upsert(userData);
-      print('User saved successfully');
-    } catch (e) {
-      print('Error saving user: $e');
-      _showSnackbar("Database Error", e.toString());
-    }
-  }
-
-  /// Logout the User
   Future<void> logout() async {
     try {
       await _googleSignIn.signOut();
       await _supabase.auth.signOut();
 
       isSignedIn.value = false;
-      _showSnackbar("Logout", "You have been logged out");
-    } catch (e) {
-      _showSnackbar("Logout Error", e.toString());
-    }
-  }
 
-  /// Centralized Snackbar Helper
-  void _showSnackbar(String title, String message) {
-    Get.snackbar(
-      title,
-      message,
-      snackPosition: SnackPosition.BOTTOM,
-      duration: const Duration(seconds: 3),
-    );
+      Get.snackbar(
+        "Logout",
+        "You have been logged out",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (error) {
+      Get.snackbar(
+        "Logout Error",
+        "An error occurred: ${error.toString()}",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }

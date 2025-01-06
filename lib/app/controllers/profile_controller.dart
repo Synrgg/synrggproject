@@ -16,7 +16,7 @@ class ProfileController extends GetxController {
   void onInit() {
     super.onInit();
     fetchUserData();
-    fetchUserImages();
+    // fetchUserImages();
     initializeDummyGamesData();
     fetchGamesData();
   }
@@ -36,27 +36,27 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> fetchUserImages() async {
-    try {
-      isLoading(true);
-      final user = _supabase.auth.currentUser;
-      if (user == null) {
-        throw Exception("User not logged in.");
-      }
+  // Future<void> fetchUserImages() async {
+  //   try {
+  //     isLoading(true);
+  //     final user = _supabase.auth.currentUser;
+  //     if (user == null) {
+  //       throw Exception("User not logged in.");
+  //     }
 
-      final data = await _supabase
-          .from('profiles')
-          .select('image_urls')
-          .eq('id', user.id)
-          .single();
+  //     final data = await _supabase
+  //         .from('profiles')
+  //         .select('image_urls')
+  //         .eq('id', user.id)
+  //         .single();
 
-      imageUrls.value = List<String>.from(data['image_urls'] ?? []);
-    } catch (e) {
-      Get.snackbar('Error', e.toString());
-    } finally {
-      isLoading(false);
-    }
-  }
+  //     imageUrls.value = List<String>.from(data['image_urls'] ?? []);
+  //   } catch (e) {
+  //     Get.snackbar('Error', e.toString());
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
 
   void initializeDummyGamesData() {
     gamesData.value = [

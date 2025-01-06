@@ -53,38 +53,34 @@ class ChatScreen extends StatelessWidget {
           itemCount: chatController.allUsers.length,
           itemBuilder: (context, index) {
             final user = chatController.allUsers[index];
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(
-                color: Colors.grey[900],
-                borderRadius: BorderRadius.circular(10),
+            return ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Color.fromARGB(255, 129, 34, 213),
+                child: Text(
+                  user['name'] != null && user['name'].isNotEmpty
+                      ? user['name'][0].toUpperCase()
+                      : '?',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              child: ListTile(
-                leading: CircleAvatar(
-                  radius: 25,
-                  backgroundImage: user['assets/images/avatar.jpg'] != null
-                      ? NetworkImage(user['avatar_url'])
-                      : null,
-                  backgroundColor: Colors.grey[800],
-                  child: user['avatar_url'] == null
-                      ? Icon(Icons.person, color: Colors.white)
-                      : null,
+              title: Text(
+                user['name'] ?? 'Unknown',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              subtitle: Text(
+                user['email'] ?? 'No email',
+                style: TextStyle(color: Colors.white70, fontSize: 14),
+              ),
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.message,
+                  color: Color.fromARGB(255, 129, 34, 213),
                 ),
-                title: Text(
-                  user['display_name'] ?? 'Unknown',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  'Last seen: ${user['last_seen'] ?? 'Recently'}',
-                  style: TextStyle(color: Colors.white70),
-                ),
-                trailing: Icon(Icons.chat_bubble_outline,
-                    color: Color.fromARGB(255, 129, 34, 213)),
-                onTap: () {
-                  // Handle chat navigation here
+                onPressed: () {
+                  Get.snackbar('Chat', 'Start chatting with ${user['name']}!',
+                      snackPosition: SnackPosition.BOTTOM,
+                      colorText: Colors.white,
+                      backgroundColor: Colors.black87);
                 },
               ),
             );
