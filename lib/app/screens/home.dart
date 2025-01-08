@@ -4,16 +4,17 @@ import 'package:synergee/widgtes/card.dart';
 import 'package:synergee/widgtes/custom_app_bar.dart';
 import 'package:synergee/widgtes/custom_bottom_navigator_bar.dart';
 import '../controllers/community_screen_controller.dart';
+import '../themes/colors.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final CommunityScreenController controller =
-      Get.put(CommunityScreenController());
+  Get.put(CommunityScreenController());
 
   final List<Map<String, dynamic>> items = List.generate(
     50,
-    (index) => {
+        (index) => {
       'title': 'Card Header',
       'description': 'This is a card description',
       'size': index % 3,
@@ -23,7 +24,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background, // Fetch background color
       appBar: CustomAppBar(controller: controller),
       body: SingleChildScrollView(
         child: Row(
@@ -37,8 +38,8 @@ class HomePage extends StatelessWidget {
                     .entries
                     .where((entry) => entry.key % 2 == 0)
                     .map((entry) => ContentCard(
-                          item: entry.value,
-                        ))
+                  item: entry.value,
+                ))
                     .toList(),
               ),
             ),
@@ -50,8 +51,8 @@ class HomePage extends StatelessWidget {
                     .entries
                     .where((entry) => entry.key % 2 == 1)
                     .map((entry) => ContentCard(
-                          item: entry.value,
-                        ))
+                  item: entry.value,
+                ))
                     .toList(),
               ),
             ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:synergee/app/controllers/community_screen_controller.dart';
-
+import '../app/controllers/community_screen_controller.dart';
 import '../app/screens/profile_screen.dart';
+import '../app/themes/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final CommunityScreenController controller;
@@ -16,65 +16,77 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background,
       elevation: 5,
       iconTheme: const IconThemeData(
-        color: Color.fromARGB(255, 129, 34, 213),
+        color: AppColors.primary,
       ),
       title: Obx(() {
         return controller.isSearchActive.value
-            ? TextField(
-                onChanged: (value) => controller.searchQuery.value = value,
-                style: const TextStyle(color: Colors.white),
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: "Search...",
-                  hintStyle: const TextStyle(color: Colors.white54),
-                  border: InputBorder.none,
-                  prefixIcon: const Icon(Icons.search, color: Colors.white54),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white),
-                    onPressed: controller.toggleSearchBar,
-                  ),
-                ),
-              )
-            : Container(
-                child: Image.asset(
-                  'assets/images/Logo.png',
-                  height: 30.h,
-                  width: 40.w,
-                ),
-              );
+            ? buildSearchField()
+            : buildLogo();
       }),
-      actions: [
-        if (!controller.isSearchActive.value)
-          IconButton(
-            icon: const Icon(Icons.search, color: Colors.white, size: 22),
-            onPressed: controller.toggleSearchBar,
-          ),
-        if (!controller.isSearchActive.value)
-          IconButton(
-            icon: const Icon(Icons.person, color: Colors.white, size: 22),
-              onPressed: () {
-                Get.to(() => const ProfileScreen(), arguments: {
-                  "username": "JohnDoe",
-                  "valorantData": {
-                    "rank": "Platinum",
-                    "kda": "1.67",
-                    "matches": "120",
-                    "winrate": "65%",
-                  },
-                  "bgmiData": {
-                    "rank": "Ace",
-                    "kda": "4.23",
-                    "matches": "150",
-                    "winrate": "72%",
-                  },
-                });
-              },
-
-          ),
-      ],
+      actions: buildActions(),
     );
+  }
+
+  Widget buildSearchField() {
+    return TextField(
+      onChanged: (value) => controller.searchQuery.value = value,
+      style: const TextStyle(color: AppColors.text),
+      autofocus: true,
+      decoration: InputDecoration(
+        hintText: "Search...",
+        hintStyle: const TextStyle(color: AppColors.subText),
+        border: InputBorder.none,
+        prefixIcon: const Icon(Icons.search, color: AppColors.subText),
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.close, color: AppColors.text),
+          onPressed: controller.toggleSearchBar,
+        ),
+      ),
+    );
+  }
+
+  Widget buildLogo() {
+    return Image.asset(
+      'assets/images/Logo.png',
+      height: 30.h,
+      width: 40.w,
+    );
+  }
+
+  List<Widget> buildActions() {
+    return [
+      if (!controller.isSearchActive.value)
+        IconButton(
+          icon: const Icon(Icons.search, color: AppColors.text, size: 22),
+          onPressed: controller.toggleSearchBar,
+        ),
+      if (!controller.isSearchActive.value)
+        IconButton(
+          icon: const Icon(Icons.person, color: AppColors.text, size: 22),
+          onPressed: () {
+            Get.to(
+                  () => const ProfileScreen(),
+              arguments: {
+                "username": "JohnDoe",
+                "valorantData": {
+                  "rank": "Platinum",
+                  "kda": "1.67",
+                  "matches": "120",
+                  "winrate": "65%",
+                },
+                "bgmiData": {
+                  "rank": "Ace",
+                  "kda": "4.23",
+                  "matches": "150",
+                  "winrate": "72%",
+                },
+              },
+            );
+          },
+        ),
+    ];
   }
 }

@@ -1,86 +1,181 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/chat_controller.dart';
-import 'home.dart'; // Import your HomePage class
+import '../themes/colors.dart';
+import 'chat_page.dart'; // Import ChatPage
+import 'home.dart'; // Import HomePage
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
   final ChatController chatController = Get.put(ChatController());
+  final TextEditingController searchController = TextEditingController();
+  final RxString searchQuery = ''.obs;
+  bool isSearchActive = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Color.fromARGB(255, 129, 34, 213),
-          ),
+          icon: const Icon(Icons.arrow_back, color: AppColors.primary),
           onPressed: () {
-            Get.offAll(() => HomePage()); // Navigate back to the homepage
+            Get.offAll(() => HomePage());
           },
         ),
-        title: Text(
+        title: isSearchActive
+            ? TextField(
+          controller: searchController,
+          autofocus: true,
+          style: const TextStyle(color: AppColors.text),
+          cursorColor: AppColors.primary,
+          decoration: const InputDecoration(
+            hintText: 'Search...',
+            hintStyle: TextStyle(color: AppColors.subText),
+            border: InputBorder.none,
+          ),
+          onChanged: (value) {
+            searchQuery.value = value;
+          },
+        )
+            : const Text(
           'Inbox',
           style: TextStyle(
-            color: Color.fromARGB(255, 129, 34, 213),
+            color: AppColors.primary,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          if (!isSearchActive)
+            IconButton(
+              icon: const Icon(Icons.search, color: AppColors.primary),
+              onPressed: () {
+                setState(() {
+                  isSearchActive = true;
+                });
+              },
+            ),
+          if (isSearchActive)
+            IconButton(
+              icon: const Icon(Icons.close, color: AppColors.text),
+              onPressed: () {
+                setState(() {
+                  isSearchActive = false;
+                  searchController.clear();
+                  searchQuery.value = '';
+                });
+              },
+            ),
+        ],
       ),
       body: Obx(() {
+        final filteredUsers = chatController.allUsers
+            .where((user) =>
+        user['name']
+            ?.toLowerCase()
+            ?.contains(searchQuery.value.toLowerCase()) ??
+            false)
+            .toList();
+
         if (chatController.isLoading.value) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Color.fromARGB(255, 129, 34, 213),
-            ),
+          return const Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
           );
         }
 
-        if (chatController.allUsers.isEmpty) {
-          return Center(
+        if (filteredUsers.isEmpty) {
+          return const Center(
             child: Text(
               'No users found.',
-              style: TextStyle(color: Colors.white70, fontSize: 18),
+              style: TextStyle(color: AppColors.subText, fontSize: 18),
             ),
           );
         }
 
         return ListView.builder(
-          itemCount: chatController.allUsers.length,
+          padding: const EdgeInsets.all(10),
+          itemCount: filteredUsers.length,
           itemBuilder: (context, index) {
-            final user = chatController.allUsers[index];
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Color.fromARGB(255, 129, 34, 213),
-                child: Text(
-                  user['name'] != null && user['name'].isNotEmpty
-                      ? user['name'][0].toUpperCase()
-                      : '?',
-                  style: TextStyle(color: Colors.white),
+            final user = filteredUsers[index];
+            final lastMessage =
+            (user['messages'] != null && user['messages'] is Map)
+                ? user['messages']['content'] ?? 'No messages yet'
+                : 'No messages yet';
+            final lastMessageTime =
+            (user['messages'] != null && user['messages'] is Map)
+                ? user['messages']['created_at'] ?? ''
+                : '';
+
+            return Card(
+              color: Colors.grey[900],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 5,
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(8),
+                leading: CircleAvatar(
+                  backgroundColor: AppColors.primary,
+                  radius: 25,
+                  backgroundImage: user['photoURL'] != null
+                      ? NetworkImage(user['photoURL'])
+                      : null,
+                  child: user['photoURL'] == null
+                      ? Text(
+                    user['name'] != null && user['name'].isNotEmpty
+                        ? user['name'][0].toUpperCase()
+                        : '?',
+                    style: const TextStyle(
+                        color: AppColors.text, fontSize: 20),
+                  )
+                      : null,
                 ),
-              ),
-              title: Text(
-                user['name'] ?? 'Unknown',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-              subtitle: Text(
-                user['email'] ?? 'No email',
-                style: TextStyle(color: Colors.white70, fontSize: 14),
-              ),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.message,
-                  color: Color.fromARGB(255, 129, 34, 213),
+                title: Text(
+                  user['name'] ?? 'Unknown',
+                  style: const TextStyle(
+                    color: AppColors.text,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                onPressed: () {
-                  Get.snackbar('Chat', 'Start chatting with ${user['name']}!',
-                      snackPosition: SnackPosition.BOTTOM,
-                      colorText: Colors.white,
-                      backgroundColor: Colors.black87);
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lastMessage,
+                      style: const TextStyle(
+                        color: AppColors.subText,
+                        fontSize: 14,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    if (lastMessageTime.isNotEmpty)
+                      Text(
+                        lastMessageTime,
+                        style: const TextStyle(
+                          color: AppColors.subText,
+                          fontSize: 12,
+                        ),
+                      ),
+                  ],
+                ),
+                onTap: () {
+                  Get.to(
+                        () => ChatPage(
+                      chatId: user['chat_id'] ?? '',
+                      userId: user['id'],
+                      displayName: user['name'],
+                      photoURL: user['photoURL'],
+                    ),
+                  );
                 },
               ),
             );

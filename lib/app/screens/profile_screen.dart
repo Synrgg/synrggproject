@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-
 import '../controllers/profile_controller.dart';
+import '../themes/colors.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -18,23 +18,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ProfileController controller = Get.put(ProfileController());
   final ImagePicker _picker = ImagePicker();
 
-  // Request permissions
   Future<void> _requestPermissions() async {
-    await [
-      Permission.photos,
-      Permission.storage,
-    ].request();
+    await [Permission.photos, Permission.storage].request();
   }
 
-  // Pick image from gallery
   Future<void> _pickImage() async {
     await _requestPermissions();
     final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
+    await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
-      // await controller.uploadImage(imageFile);
+      // You can upload the image here using your controller
     }
   }
 
@@ -42,11 +37,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.background,
         centerTitle: true,
         title: DefaultTextStyle(
           style: const TextStyle(
-            color: Color.fromARGB(255, 129, 34, 213),
+            color: AppColors.primary,
             fontSize: 26,
             fontWeight: FontWeight.bold,
             fontFamily: 'Orbitron',
@@ -81,67 +76,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: MediaQuery.of(context).size.height * 0.4,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Color.fromARGB(255, 129, 34, 213), Colors.black],
+                    colors: [AppColors.primary, AppColors.background],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
                 ),
                 child: controller.imageUrls.isEmpty
                     ? const Center(
-                        child: Text(
-                          "No images uploaded. Tap the button to add images.",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontFamily: 'Orbitron'),
-                        ),
-                      )
+                  child: Text(
+                    "No images uploaded. Tap the button to add images.",
+                    style: TextStyle(
+                        color: AppColors.text,
+                        fontSize: 18,
+                        fontFamily: 'Orbitron'),
+                  ),
+                )
                     : PageView.builder(
-                        itemCount: controller.imageUrls.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                  color:
-                                      const Color.fromARGB(255, 129, 34, 213),
-                                  width: 3),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color.fromARGB(255, 129, 34, 213)
-                                      .withOpacity(0.5),
-                                  blurRadius: 15,
-                                  spreadRadius: 3,
-                                ),
-                              ],
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.network(
-                                controller.imageUrls[index],
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Center(
-                                    child: Text(
-                                      "Failed to load image",
-                                      style: TextStyle(
-                                          color: Colors.red, fontSize: 16),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          );
-                        },
+                  itemCount: controller.imageUrls.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                            color: AppColors.primary, width: 3),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withOpacity(0.5),
+                            blurRadius: 15,
+                            spreadRadius: 3,
+                          ),
+                        ],
                       ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(
+                          controller.imageUrls[index],
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Center(
+                              child: Text(
+                                "Failed to load image",
+                                style: TextStyle(
+                                    color: AppColors.error, fontSize: 16),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
               Align(
                 alignment: Alignment.center,
                 child: IconButton(
                   icon: const Icon(Icons.camera_alt,
-                      color: Color.fromARGB(255, 129, 34, 213), size: 40),
+                      color: AppColors.primary, size: 40),
                   onPressed: _pickImage,
                 ),
               ),
@@ -151,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.black, Colors.grey[850]!],
+                    colors: [AppColors.background, AppColors.subBackground],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
@@ -162,23 +154,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(
-                            color: const Color.fromARGB(255, 129, 34, 213),
-                            width: 4),
+                        border: Border.all(color: AppColors.primary, width: 4),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color.fromARGB(255, 129, 34, 213)
-                                .withOpacity(0.6),
+                            color: AppColors.primary.withOpacity(0.6),
                             blurRadius: 15,
                             spreadRadius: 3,
                           ),
                         ],
                       ),
                       child: const CircleAvatar(
-                        backgroundColor: Colors.black,
+                        backgroundColor: AppColors.background,
                         radius: 40,
                         child: Icon(Icons.person,
-                            size: 40, color: Color.fromARGB(255, 129, 34, 213)),
+                            size: 40, color: AppColors.primary),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -190,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 129, 34, 213),
+                            color: AppColors.primary,
                             fontFamily: 'Orbitron',
                           ),
                         ),
@@ -200,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             FadeAnimatedText(
                               "Welcome Back, Player!",
                               textStyle: const TextStyle(
-                                color: Colors.white,
+                                color: AppColors.text,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Orbitron',
@@ -209,7 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             FadeAnimatedText(
                               "Gear Up for Action",
                               textStyle: const TextStyle(
-                                color: Colors.white,
+                                color: AppColors.text,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Orbitron',
@@ -232,7 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 129, 34, 213),
+                    color: AppColors.primary,
                     fontFamily: 'Orbitron',
                   ),
                 ),
@@ -246,14 +235,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 500),
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 129, 34, 213),
+                      color: AppColors.primary,
                       borderRadius: BorderRadius.circular(15),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color.fromARGB(255, 129, 34, 213)
-                              .withOpacity(0.5),
+                          color: AppColors.primary.withOpacity(0.5),
                           blurRadius: 10,
                           spreadRadius: 2,
                           offset: const Offset(0, 5),
@@ -270,18 +258,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: AppColors.text,
                             ),
                           ),
                           const SizedBox(height: 10),
                           Text("Rank: ${game["rank"]}",
-                              style: const TextStyle(color: Colors.white)),
+                              style: const TextStyle(color: AppColors.text)),
                           Text("KDA: ${game["kda"]}",
-                              style: const TextStyle(color: Colors.white)),
+                              style: const TextStyle(color: AppColors.text)),
                           Text("Matches: ${game["matches"]}",
-                              style: const TextStyle(color: Colors.white)),
+                              style: const TextStyle(color: AppColors.text)),
                           Text("Winrate: ${game["winrate"]}",
-                              style: const TextStyle(color: Colors.white)),
+                              style: const TextStyle(color: AppColors.text)),
                         ],
                       ),
                     ),

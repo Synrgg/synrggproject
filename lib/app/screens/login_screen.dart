@@ -7,18 +7,16 @@ import 'package:synergee/app/controllers/auth_controller.dart';
 import 'package:synergee/app/screens/community.dart';
 import 'package:synergee/widgtes/login_button.dart';
 import '../controllers/login_controller.dart';
+import '../themes/colors.dart';
 
 class LoginScreen extends GetView<LoginController> {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return Scaffold(
-
           resizeToAvoidBottomInset: false,
           body: Center(
             child: Padding(
@@ -44,7 +42,7 @@ class LoginScreen extends GetView<LoginController> {
                         style: GoogleFonts.orbitron(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.secondary,
+                          color: AppColors.primary, // Primary color
                         ),
                       ),
                     ),
@@ -53,65 +51,74 @@ class LoginScreen extends GetView<LoginController> {
                       child: TextField(
                         controller: controller.emailController,
                         style: TextStyle(
-                          color: theme.textTheme.bodyLarge?.color,
+                          color: AppColors.text, // Text color
                           fontSize: 16.sp,
                         ),
                         decoration: InputDecoration(
                           labelText: "Email Address",
                           labelStyle: TextStyle(
-                            color: theme.textTheme.bodyMedium?.color,
+                            color: AppColors.subText, // Subtext color
                             fontSize: 14.sp,
                           ),
                           filled: true,
-                          fillColor: theme.scaffoldBackgroundColor,
+                          fillColor: AppColors.inputBackground, // Input background color
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.h),
                             borderSide: BorderSide(
-                                color: theme.colorScheme.secondary, width: 1.h),
+                                color: AppColors.primary, // Primary color
+                                width: 1.h),
                           ),
-                          prefixIcon: Icon(Icons.email,
-                              color: theme.textTheme.bodyMedium?.color,
-                              size: 18.sp),
+                          prefixIcon: Icon(
+                            Icons.email,
+                            color: AppColors.subText, // Subtext color
+                            size: 18.sp,
+                          ),
                         ),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(bottom: 1.h),
-                      child: Obx(() => TextField(
-                            controller: controller.passwordController,
-                            obscureText: !controller.isPasswordVisible.value,
-                            style: TextStyle(
-                                color: theme.textTheme.bodyLarge?.color,
-                                fontSize: 16.sp),
-                            decoration: InputDecoration(
-                              labelText: "Password",
-                              labelStyle: TextStyle(
-                                color: theme.textTheme.bodyMedium?.color,
-                                fontSize: 14.sp,
-                              ),
-                              filled: true,
-                              fillColor: theme.scaffoldBackgroundColor,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.h),
-                                borderSide: BorderSide(
-                                    color: theme.colorScheme.secondary,
-                                    width: 1.h),
-                              ),
-                              prefixIcon: Icon(Icons.lock,
-                                  color: theme.textTheme.bodyMedium?.color,
-                                  size: 18.sp),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  controller.isPasswordVisible.value
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: theme.textTheme.bodyMedium?.color,
-                                  size: 18.sp,
-                                ),
-                                onPressed: controller.togglePasswordVisibility,
+                      child: Obx(
+                            () => TextField(
+                          controller: controller.passwordController,
+                          obscureText: !controller.isPasswordVisible.value,
+                          style: TextStyle(
+                            color: AppColors.text, // Text color
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            labelStyle: TextStyle(
+                              color: AppColors.subText, // Subtext color
+                              fontSize: 14.sp,
+                            ),
+                            filled: true,
+                            fillColor: AppColors.inputBackground, // Input background color
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.h),
+                              borderSide: BorderSide(
+                                color: AppColors.primary, // Primary color
+                                width: 1.h,
                               ),
                             ),
-                          )),
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              color: AppColors.subText, // Subtext color
+                              size: 18.sp,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                controller.isPasswordVisible.value
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: AppColors.subText, // Subtext color
+                                size: 18.sp,
+                              ),
+                              onPressed: controller.togglePasswordVisibility,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     Align(
                       alignment: Alignment.centerRight,
@@ -122,22 +129,25 @@ class LoginScreen extends GetView<LoginController> {
                           child: Text(
                             "Forgot password?",
                             style: TextStyle(
-                                color: theme.colorScheme.secondary,
-                                fontSize: 14.sp),
+                              color: AppColors.primary, // Primary color
+                              fontSize: 14.sp,
+                            ),
                           ),
                         ),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(bottom: 2.h),
-                      child: Obx(() => GamerLoginButton(
-                            text: controller.isLoading.value
-                                ? "Loading..."
-                                : "Login",
-                            onPressed: controller.isLoading.value
-                                ? () {}
-                                : controller.login,
-                          )),
+                      child: Obx(
+                            () => GamerLoginButton(
+                          text: controller.isLoading.value
+                              ? "Loading..."
+                              : "Login",
+                          onPressed: controller.isLoading.value
+                              ? () {}
+                              : controller.login,
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(bottom: 2.h),
@@ -146,8 +156,9 @@ class LoginScreen extends GetView<LoginController> {
                         child: Text(
                           "Not a member? Register now",
                           style: TextStyle(
-                              color: theme.colorScheme.secondary,
-                              fontSize: 14.sp),
+                            color: AppColors.primary, // Primary color
+                            fontSize: 14.sp,
+                          ),
                         ),
                       ),
                     ),
@@ -155,17 +166,18 @@ class LoginScreen extends GetView<LoginController> {
                       padding: EdgeInsets.only(bottom: 2.h),
                       child: Row(
                         children: [
-                          const Expanded(child: Divider(color: Colors.white54)),
+                          const Expanded(child: Divider(color: AppColors.divider)), // Divider color
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 2.w),
                             child: Text(
                               "Or continue with",
                               style: TextStyle(
-                                  color: theme.textTheme.bodyMedium?.color,
-                                  fontSize: 12.sp),
+                                color: AppColors.subText, // Subtext color
+                                fontSize: 12.sp,
+                              ),
                             ),
                           ),
-                          const Expanded(child: Divider(color: Colors.white54)),
+                          const Expanded(child: Divider(color: AppColors.divider)), // Divider color
                         ],
                       ),
                     ),
@@ -175,22 +187,22 @@ class LoginScreen extends GetView<LoginController> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 2.5.w),
                           child: IconButton(
-                            icon: const FaIcon(FontAwesomeIcons.google,
-                                color: Colors.redAccent),
+                            icon: const FaIcon(
+                              FontAwesomeIcons.google,
+                              color: AppColors.google, // Google color
+                            ),
                             iconSize: 5.w,
                             onPressed: () async {
                               try {
                                 await Get.find<AuthController>()
                                     .loginWithGoogle();
-                                if (Get.find<AuthController>()
-                                    .isSignedIn
-                                    .value) {
+                                if (Get.find<AuthController>().isSignedIn.value) {
                                   Get.offAll(() => CommunityScreen());
                                 }
                               } catch (e) {
                                 Get.snackbar(
                                   "Error",
-                                  "Failed to sign in with Google${e}",
+                                  "Failed to sign in with Google: $e",
                                   snackPosition: SnackPosition.BOTTOM,
                                 );
                               }
@@ -200,8 +212,10 @@ class LoginScreen extends GetView<LoginController> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 2.5.w),
                           child: IconButton(
-                            icon: const FaIcon(FontAwesomeIcons.apple,
-                                color: Colors.white),
+                            icon: const FaIcon(
+                              FontAwesomeIcons.apple,
+                              color: AppColors.apple, // Apple color
+                            ),
                             iconSize: 5.w,
                             onPressed: () {
                               // Apple sign-in action
@@ -211,16 +225,18 @@ class LoginScreen extends GetView<LoginController> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 2.5.w),
                           child: IconButton(
-                            icon: const FaIcon(FontAwesomeIcons.xbox,
-                                color: Colors.greenAccent),
+                            icon: const FaIcon(
+                              FontAwesomeIcons.xbox,
+                              color: AppColors.xbox, // Xbox color
+                            ),
                             iconSize: 5.w,
                             onPressed: () {
-                              // Game ID sign-in action
+                              // Xbox sign-in action
                             },
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

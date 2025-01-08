@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../app/themes/colors.dart';
 
 class ContentCard extends StatelessWidget {
   final Map<String, dynamic> item;
@@ -25,7 +26,7 @@ class ContentCard extends StatelessWidget {
           Container(
             height: cardHeight,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.cardBackground, // Card background color
               borderRadius: BorderRadius.circular(16),
             ),
             child: Stack(
@@ -35,7 +36,7 @@ class ContentCard extends StatelessWidget {
                   child: Icon(
                     Icons.image,
                     size: cardHeight * 0.25,
-                    color: Colors.grey,
+                    color: AppColors.iconPlaceholder, // Placeholder icon color
                   ),
                 ),
                 Positioned(
@@ -43,7 +44,7 @@ class ContentCard extends StatelessWidget {
                   right: 3.w,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey[800],
+                      color: AppColors.moreIconBackground, // Icon button background
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
@@ -55,7 +56,7 @@ class ContentCard extends StatelessWidget {
                       ),
                       icon: const Icon(
                         Icons.more_horiz,
-                        color: Colors.white,
+                        color: AppColors.text, // Icon color
                       ),
                       onPressed: () {},
                     ),
@@ -72,7 +73,7 @@ class ContentCard extends StatelessWidget {
                 Text(
                   item['title'],
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.text, // Text color
                     fontWeight: FontWeight.bold,
                     fontSize: 16.sp,
                   ),
@@ -86,7 +87,7 @@ class ContentCard extends StatelessWidget {
                       child: Text(
                         item['description'],
                         style: TextStyle(
-                          color: Colors.grey[300],
+                          color: AppColors.subText, // Subtext color
                           fontSize: 14.sp,
                         ),
                         maxLines: 1,
@@ -97,7 +98,7 @@ class ContentCard extends StatelessWidget {
                       padding: EdgeInsets.only(left: 2.w),
                       child: Icon(
                         Icons.arrow_forward,
-                        color: Colors.white,
+                        color: AppColors.icon, // Arrow icon color
                         size: 18.sp,
                       ),
                     ),
